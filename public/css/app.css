@@ -1,0 +1,337 @@
+.fa ,.fa-asterisk {
+    color: rgb(210, 53, 53);
+}
+
+.big-checkbox{
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+}
+
+input[type="submit"] {
+    padding: 5px 15px;
+    background: #ccc;
+    border: 0 none;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.editable:hover .edit_button{
+    display: inline;
+}
+
+.edit_button {
+    display: none;
+    position: relative;
+}
+
+.show > .dropdown-menu {
+    max-height: 800px;
+    visibility: visible;
+}
+
+.dropdown-menu {
+    display: block;
+    max-height: 0;
+    visibility: hidden;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    /* background-color: #f2f2f2; */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+h3 {
+    margin: auto;
+    text-align: center;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.duplicate-color-block {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    background-color: #ffbf00;
+}
+
+.dropdown-item,
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.add-container {
+   max-width: 80vw;
+   margin:auto;
+   padding: 20px;
+   background-color: #f8f9fa;
+   border-radius: 5px;
+   box-shadow: 0 2px 4px rgba(0,0,0,.5); 
+}
+
+.list-container {
+    margin-left: 10vw;
+    /* max-width: 1400px; */
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
+
+.login-container {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.login-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.login-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.login-container input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #315af2;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.login-container input[type="submit"]:hover {
+    background-color: #4076ffb2;
+}
+
+.login-container p {
+    text-align: center;
+    font-weight: bolder;
+    font-size: x-large;
+    color: #ee4646;
+}
+
+.account-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.unit-row :hover{
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+#dropArea {
+    margin: auto;
+    width: 60%;
+    height: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#afterDropArea {
+    display: none;
+    margin: auto;
+    padding-bottom: 1%;
+    width: 60%;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+#afterDropArea div{
+    margin: auto;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+#afterDropArea button{
+    margin-right: 10px;
+}
+
+#previewArea {
+    display: none;
+}
+
+#previewArea table {
+    width: 100%;
+}
+
+#previewArea td {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* name="select-col" */
+
+td[name=select-col],
+th[name=select-col] {
+    display: none;
+}
+
+.editing-block {
+    width: 100%;
+}
+
+.table-responsive {
+    height: 80vh;
+    margin-top: 10px;
+}
+.table-responsive thead { 
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-fix-column {
+    table-layout: fixed;
+}
+
+.th-select {
+    text-align: center;
+    width: 110px;
+}
+
+.th-sn {
+    text-align: center;
+    width: 60px;
+}
+
+.th-year {
+    text-align: center;
+    width: 110px;
+}
+
+.th-unit {
+    text-align: center;
+    width: 180px;
+}
+
+.th-unitemail {
+    text-align: center;
+    width: 180px;
+}
+
+.th-title {
+    text-align: center;
+    width: 180px;
+}
+
+.th-firstname {
+    text-align: center;
+    width: 120px;
+}
+
+.th-lastname {
+    text-align: center;
+    width: 120px;
+}
+
+.th-chinesename {
+    text-align: center;
+    width: 120px;
+}
+
+.th-position {
+    text-align: center;
+    width: 240px;
+}
+
+.th-industry {
+    text-align: center;
+    width: 240px;
+}
+
+.th-companyname {
+    text-align: center;
+    width: 240px;
+}
+
+.th-bsa {
+    text-align: center;
+    width: 300px;
+}
+
+.th-ms {
+    text-align: center;
+    width: 300px;
+}
+
+.th-country {
+    text-align: center;
+    width: 170px;
+}
+
+.th-email {
+    text-align: center;
+    width: 290px;
+}
+
+.th-phone {
+    text-align: center;
+    width: 240px;
+}
+
+.th-senddate {
+    text-align: center;
+    width: 180px;
+}
+
+.th-currentqs {
+    text-align: center;
+    width: 100px;
+}
+
+.th-prevqs {
+    text-align: center;
+    width: 100px;
+}
+
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+}

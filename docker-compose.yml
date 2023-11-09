@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:latest
+    container_name: nycu_qs
+    ports:
+      - "3306:3306"
+    command: --init-file /data/application/init.sql
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: qsrank
+    
+    volumes:
+      - ./init.sql:/data/application/init.sql
+    networks:
+      - my-network
+networks:
+  my-network:
+    driver: bridge
