@@ -28,6 +28,8 @@ php artisan app:change-prev-qs-data-type
 # Run migration
 php artisan migrate
 ```
+> [!NOTE]
+> These commands are defined in `app/Console/Commands` directory, you can check the code to get more information
 7. Configure database in `.env`
 8. Run `php artisan serve` and visit `http://localhost:8000` to see the website
 
