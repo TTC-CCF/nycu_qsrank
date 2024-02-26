@@ -651,11 +651,11 @@ async function logout() {
 }
 
 function AddData(mode){
-    window.location.assign(`/add_${mode}`);
+    window.location.assign(`/new/${mode}`);
 }
 
 function ImportData(mode){
-    window.location.assign(`/import_${mode}`)
+    window.location.assign(`/import/${mode}`)
 }
 
 async function toList(change_mode = null){

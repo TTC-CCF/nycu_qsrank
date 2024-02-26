@@ -154,7 +154,7 @@ function _import() {
     var jsonData = JSON.stringify({'data':data, 'mode':$('input[type="checkbox"]:checked').val()});
 
     const csrf = document.querySelector('meta[name="_token"]').content;
-    fetch('/importing', {
+    fetch('/import', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

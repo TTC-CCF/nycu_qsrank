@@ -8,7 +8,7 @@
     <title>新增學者</title>
     <script src="https://kit.fontawesome.com/785d0df53a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 
 <body>
@@ -47,7 +47,7 @@
         <h1>新增學者</h1>
         <hr/>
         <div class="add-container">
-            <form method="post" action="/adding" id="sendForm">
+            <form method="post" action="/new" id="sendForm">
                 @csrf
                 <div class="form-row">
                     

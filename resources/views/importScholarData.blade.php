@@ -11,7 +11,7 @@
     <script src="https://kit.fontawesome.com/785d0df53a.js" crossorigin="anonymous"></script>
     <title>匯入學者資料</title>
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 </head>
@@ -103,8 +103,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.core.min.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/dragfile.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/dragfile.js"></script>
     
 </body>
 

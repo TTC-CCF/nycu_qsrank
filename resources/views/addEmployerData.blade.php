@@ -8,7 +8,7 @@
     <title>新增雇主</title>
     <script src="https://kit.fontawesome.com/785d0df53a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 
 <body>
@@ -48,7 +48,7 @@
         <h1>新增雇主</h1>
         <hr/>
         <div class="add-container">
-            <form method="post" action="/adding" id="sendForm">
+            <form method="post" action="/new" id="sendForm">
                 @csrf
                 <div class="form-row">
                     @if ($unit == 'Admin')
@@ -200,7 +200,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="/js/app.js"></script>
 
 </body>
 

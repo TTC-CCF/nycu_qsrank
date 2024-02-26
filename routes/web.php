@@ -24,11 +24,11 @@ Route::post('/logout', '\App\Http\Controllers\AuthController@logout')->middlewar
 Route::get('/', '\App\Http\Controllers\ListController@showList')->name('list')->middleware('auth');
 Route::post('/', '\App\Http\Controllers\ListController@changeMode')->middleware('auth');
 
-Route::get('/add_{mode}', '\App\Http\Controllers\DataController@showAdd')->middleware('auth');
-Route::get('/import_{mode}', '\App\Http\Controllers\DataController@showImport')->middleware('auth');
+Route::get('/new/{mode}', '\App\Http\Controllers\DataController@showAdd')->middleware('auth');
+Route::get('/import/{mode}', '\App\Http\Controllers\DataController@showImport')->middleware('auth');
 
-Route::post('/adding', '\App\Http\Controllers\DataController@add')->middleware('auth');
-Route::post('/importing', '\App\Http\Controllers\DataController@import')->middleware('auth');
+Route::post('/new', '\App\Http\Controllers\DataController@add')->middleware('auth');
+Route::post('/import', '\App\Http\Controllers\DataController@import')->middleware('auth');
 
 Route::post('/delete', '\App\Http\Controllers\DataController@delete')->middleware('auth');
 
