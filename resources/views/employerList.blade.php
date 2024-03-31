@@ -59,6 +59,16 @@
             </div>
         </nav>
         <h1 class="col">雇主名單</h1>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ $academy_list[$unit] }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              @foreach ($academy_list as $unitno => $academy)
+                  <a class="dropdown-item" href="/?unit={{$unitno}}">{{ $academy }}</a>
+              @endforeach
+            </div>
+        </div>
         @if ($list->isNotEmpty())
         <div class="btn-group" role="group" id="chooseBtn">
             <button class="btn btn-outline-dark" onclick="delete_choosing()">刪除</button>
@@ -74,7 +84,6 @@
                     <tr>
                         <th class="th-select" scope="col" name="select-col">選擇</th>
                         <th class="th-sn" scope="col">編號</th>
-                        <th class="th-year" scope="col">年度</th>
                         <th class="th-unit" scope="col">資料提供單位</th>
                         <th class="th-unit" scope="col">資料提供者</th>
                         <th class="th-unitemail" scope="col">資料提供者Email</th>
@@ -90,23 +99,23 @@
                         <th class="th-country" scope="col">Location</th>
                         <th class="th-email" scope="col">Email</th>
                         <th class="th-phone" scope="col">Phone</th>
+                        <th class="th-dupUnits" scope="col">重複系所</th>
                         <th class="th-senddate" scope="col">寄送Email日期</th>
-                        <th class="th-currentqs" scope="col">今年是否同意參加</th>
-                        <th class="th-prevqs" scope="col">去年是否同意參加</th>
+                        @foreach($year_results as $year => $_)
+                            <th class="th-currentqs" scope="col">{{ $year }}QS</th>
+                        @endforeach
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($list as $idx => $row)
-                    <tr @if ($row->is_duplicated) style="background-color:#ffbf00;" @endif>
+                    <tr @if ($row["dupUnits"]) style="background-color:#ffbf00;" @endif>
                         <td class="td-class" name="select-col">
                             <input type="checkbox" class="big-checkbox" name="select" sn="{{ $row['SN'] }}">
                         </td>
                         <td row="index">
                             {{ $idx + 1 }}
                         </td>
-                        <td row="year">
-                            {{ $row['year'] }}
-                        </td> 
+                         
                         @if ($admin)
                         <td class="editable" row="資料提供單位">
                             {{ $row['資料提供單位'] }}
@@ -119,96 +128,98 @@
                         </td>
                         
                         @endif
-                        <td class="editable" row="資料提供者">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者">
                             {{ $row['資料提供者'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td class="editable" row="資料提供者Email">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者Email">
                             {{ $row['資料提供者Email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Title">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Title">
                             {{ $row['Title'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($titles))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="First_name">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="First_name">
                             {{ $row['First_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Last_name">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Last_name">
                             {{ $row['Last_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Chinese_name">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Chinese_name">
                             {{ $row['Chinese_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Position">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Position">
                             {{ $row['Position'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Industry">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Industry">
                             {{ $row['Industry'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($industries))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="CompanyName">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="CompanyName">
                             {{ $row['CompanyName'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="BroadSubjectArea">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="BroadSubjectArea">
                             {{ $row['BroadSubjectArea'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="MainSubject">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="MainSubject">
                             {{ $row['MainSubject'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Location">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Location">
                             {{ $row['Location'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($countries))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Email">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Email">
                             {{ $row['Email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td class="editable" row="Phone">
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Phone">
                             {{ $row['Phone'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
+                        <td row="dupUnits">
+                            {{ $row["dupUnits"] }}
+                        </td>
                         @if ($admin)
-                        <td class="editable" row="寄送Email日期">
+                        <td class="editable" row="寄送Email日期" type="date">
                             {{ $row['寄送Email日期'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td class="editable" row="今年是否同意參與QS" ischeck={{ $row['今年是否同意參與QS'] }}>
-                            @if ($row['今年是否同意參與QS'])
-                            <i class="fa-solid fa-check"></i>
-                            @elseif ($row['今年是否同意參與QS'] === 0)
-                            <i class="fa-solid fa-times"></i>
-                            @endif
-                            <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
+                            @foreach($year_results as $year => $result) 
+
+                            <td class="editable" row="{{$year}}QS" type="checkbox" isCheck={{ $result[$row["SN"]] }}>
+                                @if ($result[$row["SN"]])
+                                <i class="fa-solid fa-check"></i>
+                                @else
+                                <i class="fa-solid fa-times"></i>
+                                @endif
+                                
+                                <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
+                            @endforeach
                         @else
                         <td row="寄送Email日期">
                             {{ $row['寄送Email日期'] }}
                         </td>
-                        <td row="今年是否同意參與QS">
-                            @if ($row['今年是否同意參與QS'])
-                            <i class="fa-solid fa-check"></i>
-                            @elseif ($row['今年是否同意參與QS'] === 0)
-                            <i class="fa-solid fa-times"></i>
-                            @endif
-                        </td>
+                            @foreach($year_results as $year => $result) 
+                                <td row="{{$year}}QS" type="checkbox">
+                                    @if ($result[$row["SN"]])
+                                    <i class="fa-solid fa-check"></i>
+                                    @else
+                                    <i class="fa-solid fa-times"></i>
+                                    @endif
+                                </td>
+                            @endforeach
                         @endif
-                        <td row="去年是否同意參與QS">
-                            @if ($row['去年是否同意參與QS'])
-                            <i class="fa-solid fa-check"></i>
-                            @elseif ($row['去年是否同意參與QS'] === 0)
-                            <i class="fa-solid fa-times"></i>
-                            @endif
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -308,9 +319,8 @@
     <input id="bsa_list" value='@json($bsa_list)' hidden>
     <input id="ms_dict" value='@json($ms_dict)' hidden>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.core.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/addStatus.js"></script>

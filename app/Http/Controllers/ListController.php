@@ -24,8 +24,7 @@ class ListController extends Controller
     private function getStaticData($mode)
     {
         $bsa_list = Subject::pluck('BroadSubjectArea')->unique();
-        $academy_list = Academy::all();
-        $academy_name_list = Academy::pluck("Academy_Name");
+        
         $subjects = Subject::all();
         $ms_dict = [];
 
@@ -38,6 +37,12 @@ class ListController extends Controller
             }
             $ms_dict[$broadSubjectArea][] = $mainSubject;
         }
+
+        $academy = Academy::all();
+        foreach($academy as $row){
+            $academy_list[$row->Academy_No] = $row->Academy_Name;
+        }
+
         // retrieve title data
         $titles = DB::table('Title')->where('belongs_to', $mode)->get(['name'])->toArray();
 
@@ -62,7 +67,6 @@ class ListController extends Controller
             'bsa_list' => $bsa_list,
             'ms_dict' => $ms_dict,
             'academy_list' => $academy_list,
-            'academy_name_list' => $academy_name_list,
             'titles' => $titles,
             'industries' => $industries,
             'countries' => $countries,
@@ -79,7 +83,6 @@ class ListController extends Controller
         $unit = $request->query("unit") ?? 1;
 
         $static_data = $this->getStaticData($mode);
-
 
         [$list, $year_result] = $table->getList($unit);
 
