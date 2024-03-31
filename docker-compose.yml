@@ -8,12 +8,14 @@ services:
       - "3306:3306"
     command: --init-file /data/application/init.sql
     environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_ROOT_PASSWORD: "123"
-      MYSQL_DATABASE: qsrank
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_USER: $DB_USERNAME
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_DATABASE: $DB_DATABASE
     
     volumes:
       - ./init.sql:/data/application/init.sql
+      - ./dbdata:/var/lib/mysql
     networks:
       - my-network
 networks:

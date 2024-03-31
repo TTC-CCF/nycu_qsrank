@@ -317,8 +317,8 @@ function editing(element, sn, dropdownArray = null) {
         handle_cancel_edit(current_block);             
     }
     var parent_element = element.parentNode;
-    var isCheckbox = parent_element.getAttribute('row') === '今年是否同意參與QS';
-    var isDate = parent_element.getAttribute('row') === '寄送Email日期';
+    var isCheckbox = parent_element.getAttribute("type") === "checkbox"
+    var isDate = parent_element.getAttribute("type") === "date";
 
     // setting states
     before_edit_string = isCheckbox ? (parent_element.getAttribute('isCheck')) : parent_element.textContent.trim();
@@ -424,7 +424,7 @@ async function edit_post(parent_element){
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrf
             },
-            body: JSON.stringify({'key': key, 'new_data': new_data, 'SN': current_sn})
+            body: JSON.stringify({'key': key, 'new_data': new_data, 'SN': current_sn, 'isCheckbox': new_data_element.type === "checkbox"})
         });
     
         // reset state

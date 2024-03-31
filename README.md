@@ -15,22 +15,15 @@ cd qs-website
 ```
 cp .env.example .env
 ```
-6. Run `docker compose up -d` from the directory of your docker-compose.yml and init.sql
-> [!NOTE] 
-> You should request me to get the init.sql file
+6. Run `docker compose up -d` to start the database
+
 7. Run database migration script and migrate database
 ```shell
-# Insert static data into Title, Country, Industry, Academy tables
-php artisan app:insert-static   
-# Hash users' password
-php artisan hash:users
-# Change prev qs data type (for database migration from prev qs website)
-php artisan app:change-prev-qs-data-type 
-# Run migration
-php artisan migrate
+# Run the database migration script
+./initdb.sh
 ```
 > [!NOTE]
-> These commands are defined in `app/Console/Commands` directory, you can check the code to get more information
+> The commands in `initdb.sh` are defined in `app/Console/Commands` directory, you can check the code to get more information
 8. Configure database in `.env`
 9. Run `php artisan serve` and visit `http://localhost:8000` to see the website
 

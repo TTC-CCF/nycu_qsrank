@@ -44,6 +44,7 @@ class UserController extends Controller
             $user->email = $account;
             $user->unit = $unit;
             $user->unitno = substr($unit, 0, 2);
+            $user->permission_mode = 'read';
             $user->save();
 
             DB::commit();

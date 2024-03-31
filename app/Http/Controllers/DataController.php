@@ -21,23 +21,22 @@ class DataController extends Controller
         $this->output = new \Symfony\Component\Console\Output\ConsoleOutput();
     }
     public function edit(Request $request){
+        $this->output->writeln($request);
         $mode = Session::get('list_mode');
         $key = $request->input('key');
         $new_data = $request->input('new_data');
         $sn = $request->input('SN');
+        $isCheckbox = $request->input('isCheckbox');
+
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-        $this->output->writeln($request);
-        DB::beginTransaction();
-        try{
-            $table::where('SN', $sn)->update([$key => $new_data]);
-            if ($key == '資料提供單位') {
-                $unitno = Academy::where('Academy_Name', $new_data)->get(['Academy_No'])[0]['Academy_No'];
-                $table::where('SN', $sn)->update(['資料提供單位編號' => $unitno]);
-            }
-            DB::commit();
-        } catch(Exception $err){
-            $this->output->writeln($err);
-            DB::rollBack();
+
+        if ($isCheckbox) {
+            $year = substr($key, 0, -2);
+            $table->updateYearResult($sn, $year, $new_data);
+        } elseif ($key === '資料提供單位') {
+            $table->updateUnitno($sn, $new_data);
+        } else {
+            $table->updateTextData($sn, $key, $new_data);
         }
     }
 
@@ -70,7 +69,7 @@ class DataController extends Controller
         try{
             $table->SN = $request->input('SN');
             $table->year = $request->input('year');
-            $table->資料提供單位編號 = $unitno;
+            $table->unitno = $unitno;
             $table->資料提供單位 = $request->input('UnitName');
             $table->資料提供者 = $request->input('Provider');
             $table->資料提供者Email = $request->input('UnitEmail');
@@ -130,7 +129,7 @@ class DataController extends Controller
                 }
                 else{
                     DB::beginTransaction();
-                    $table::where('資料提供單位編號', $unitno)->delete();
+                    $table::where('unitno', $unitno)->delete();
                     DB::commit();
                 }
             }
@@ -151,12 +150,12 @@ class DataController extends Controller
                 $table->year = date('Y');
                 if ($unitno == 0){
                     $no = Academy::where('Academy_Name', $row[1])->value('Academy_No');
-                    $table->資料提供單位編號 = $no;
+                    $table->unitno = $no;
                 }
                 else if ($row[1] != $unit)
                     throw new Exception('Data is not belong to this unit');
                 else
-                    $table->資料提供單位編號 = $unitno;
+                    $table->unitno = $unitno;
                 
                 $table->資料提供單位 = $row[1];
                 $table->資料提供者 = $row[2];
@@ -217,7 +216,7 @@ class DataController extends Controller
         $unitno = Session::get('id');
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
         $view_name = ($mode == 'scholar') ? 'addScholarData' : 'addEmployerData';
-        $new_sn = $table::query()->max('SN');
+        $new_sn = $table->query()->max('SN');
         $academy_list = null;
         $bsa_list = Subject::pluck('BroadSubjectArea')->unique();
 

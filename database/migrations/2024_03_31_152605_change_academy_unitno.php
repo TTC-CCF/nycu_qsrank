@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::table('Academy', function (Blueprint $table) {
+            $table->integer("Academy_No")->change();
+
         });
     }
 
@@ -22,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::table('Academy', function (Blueprint $table) {
+            $table->string("Academy_No")->change();
+
+        });
     }
 };

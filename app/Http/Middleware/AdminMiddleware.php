@@ -16,7 +16,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (! $request->user() || ! $request->user()->isAdmin()) {
-            abort(403, 'Unauthorized action.');
+            return response()->json(['message' => 'Unauthorized action'], 403);
         }
         return $next($request);
     }

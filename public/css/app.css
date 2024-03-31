@@ -330,6 +330,11 @@ th[name=select-col] {
     width: 100px;
 }
 
+.th-dupUnits {
+    text-align: center;
+    width: 100px;
+}
+
 table td {
     word-wrap: break-word;
     overflow-wrap: break-word;
