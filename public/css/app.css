@@ -312,7 +312,7 @@ th[name=select-col] {
 
 .th-phone {
     text-align: center;
-    width: 240px;
+    width: 180px;
 }
 
 .th-senddate {
@@ -332,7 +332,7 @@ th[name=select-col] {
 
 .th-dupUnits {
     text-align: center;
-    width: 100px;
+    width: 200px;
 }
 
 table td {

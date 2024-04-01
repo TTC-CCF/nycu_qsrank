@@ -61,22 +61,29 @@
         </nav> 
 
         <h1>學者名單</h1>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ $academy_list[$unit] }}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              @foreach ($academy_list as $unitno => $academy)
-                  <a class="dropdown-item" href="/?unit={{$unitno}}">{{ $academy }}</a>
-              @endforeach
+        <div class="container-fluid mb-4">
+            <div class="row">
+                <div class="col">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ $academy_list[$unit] }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach ($academy_list as $unitno => $academy)
+                            <a class="dropdown-item" href="/?unit={{$unitno}}">{{ $academy }}</a>
+                        @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
+        
         </div>
-
+       
         @if ($list->isNotEmpty())
         <div class="btn-group" role="group" id="chooseBtn">
             <button class="btn btn-outline-dark" onclick="delete_choosing()">刪除資料</button>
+            <button id="dup_btn" class="btn btn-outline-dark" onclick="showDup()"><span class="duplicate-color-block"></span>檢查重複資料</button>
         </div>
-        <button id="dup_btn" class="btn" onclick="showDup()"><span class="duplicate-color-block"></span>檢查重複資料</button>
         
         @endif
         <hr/>
@@ -132,68 +139,68 @@
                         </td>
                         @endif
 
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="資料提供者">
                             {{ $row['資料提供者'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者Email">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="資料提供者Email">
                             {{ $row['資料提供者Email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Title">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Title">
                             {{ $row['Title'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($titles))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="First_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="First_name">
                             {{ $row['First_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Last_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Last_name">
                             {{ $row['Last_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Chinese_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Chinese_name">
                             {{ $row['Chinese_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Job_title">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Job_title">
                             {{ $row['Job_title'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Department">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Department">
                             {{ $row['Department'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Institution">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Institution">
                             {{ $row['Institution'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="BroadSubjectArea">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="BroadSubjectArea">
                             {{ $row['BroadSubjectArea'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="MainSubject">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="MainSubject">
                             {{ $row['MainSubject'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Country">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Country">
                             {{ $row['Country'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($countries))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Email">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Email">
                             {{ $row['Email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Phone">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Phone">
                             {{ $row['Phone'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td row="dupUnits">
-                            {{ $row["dupUnits"] }}
+                            <pre>{{ $row["dupUnits"] }}</pre>
                         </td>
                         @if ($admin)
                         <td class="editable" row="寄送Email日期" type="date">

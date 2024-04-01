@@ -33,18 +33,6 @@
                         <div class="nav-link" onclick="toList('employer')">雇主名單</div>
                     </li>
 
-                    {{-- <li class="nav-item dropdown">
-                        <div class="nav-link dropdown-toggle" id="addDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            新增/匯入
-                        </div>
-                        <div class="dropdown-menu dropdown-menu w-auto shadow p-0" aria-labelledby="addDropdown">
-                            <div class="dropdown-item" onclick="AddData('scholar')">新增學者資料</div>
-                            <div class="dropdown-item" onclick="AddData('employer')">新增雇主資料</div>
-                            <div class="dropdown-item" onclick="ImportData('scholar')">匯入學者資料</div>
-                            <div class="dropdown-item" onclick="ImportData('employer')">匯入雇主資料</div>
-                        </div>
-                    </li> --}}
-
                     @if ($admin)
                     <li class="nav-item active">
                         <div class="nav-link" onclick="toUnitManager()">管理單位</div>
@@ -59,39 +47,105 @@
 
         <h1>管理單位</h1>
         <hr>
-        <div class="container add-container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-3">
-                    <div class="table-responsive">
-                        <table id='table' class="table table-striped  table-fix-column">
-                            <tbody>
-                                @foreach ($academy_list as $academy)
-                                <tr class="unit-row">
-                                    <td  onclick='show_unit(@json($academy))'>{{ $academy }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table> 
-                    </div>
-                    
+                <div class="col-2 d-flex flex-column align-items-center">
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#permissionModal" >切換系所權限</button>
                 </div>
-                <div class="col-9 account-container">
-                    <div id="accountContainer"><h3>請選擇單位<h3></div>
+                <div class="col-10">
+                    <div class="container-fluid add-container">
+                        <div class="row">
+                            
+                            <div class="col-3">
+                                <div class="table-responsive">
+                                    <table id='table' class="table table-striped  table-fix-column">
+                                        <tbody>
+                                            @foreach ($academy_list as $academy)
+                                            <tr class="unit-row">
+                                                <td  onclick='show_unit(@json($academy))'>{{ $academy }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table> 
+                                </div>
+                                
+                            </div>
+                            <div class="col-9 account-container">
+                                <div id="accountContainer"><h3>請選擇單位<h3></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
+        
         
     </div>
         
+    <div class="modal fade" id="permissionModal" tabindex="-1" role="dialog" aria-labelledby="permissionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="permissionModalLabel">切換系所權限</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('permission') }}" id="permission-form">
+                        @csrf
+                        <table id='table' class="table table-striped  table-fix-column">
+                            <tbody>
+                                <tr class="table-secondary">
+                                    <td style="font-weight: bold; width: 45%;">所有系所</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" for="all-permit-write" onclick="changeAll('write')">檢視\修改資料</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" for="all-permit-readonly" onclick="changeAll('readonly')">檢視資料</button>
+                                    </td>
+                                </tr>
+                                @foreach ($academy_list as $unitno => $academyName)
+                                <tr class="unit-row">
+                                    <td style="font-weight: bold; width: 45%;">{{ $academyName }}</td>
+                                    <td class="permit-write">
+                                        <label for="{{$unitno}}-permit-write">檢視\修改資料</label>
+                                        <input id="{{$unitno}}-permit-write" type="radio" name="{{$unitno}}-permit" 
+                                        @if ($permit_each_unit[$unitno] == 'write')
+                                        checked                                            
+                                        @endif
+                                        value="write"/>
+                                    </td>
+                                    <td class="permit-readonly">
+                                        <label for="{{$unitno}}-permit-readonly">檢視資料</label>
+                                        <input id="{{$unitno}}-permit-readonly" type="radio" name="{{$unitno}}-permit" 
+                                        @if ($permit_each_unit[$unitno] == 'readonly')
+                                        checked                                            
+                                        @endif
+                                        value="readonly"/>
+                                    </td>
+                                </tr>
+                                
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="permissionModal-close">取消</button>
+                    <button type="submit" class="btn btn-danger" onclick="postPermissions()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="alert alert-success">
-                    <div class="modal-body">
-                        <h4 id="success-msg"><i class="fas fa-check m-1"></i></h4>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">確認</button>
-                    </div>
+            <div class="alert alert-success">
+                <div class="modal-body">
+                    <h4 id="success-msg"><i class="fas fa-check m-1"></i></h4>
                 </div>
             </div>
         </div>
@@ -102,7 +156,7 @@
             <div class="alert alert-danger">
                 <div class="modal-body">
                     <h4 id="failed-msg"><i class="fas fa-times m-1"></i></h4>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

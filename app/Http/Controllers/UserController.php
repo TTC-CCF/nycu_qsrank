@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Academy;
+use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,8 +18,13 @@ class UserController extends Controller
       }
     public function showUnits() {
         $units = User::all();
-        $academy_list = Academy::pluck('Academy_Name');
-        return view('unitsManager', ['academy_list' => $academy_list, 'units' => $units, 'admin' => true, 'add_status' => '']);
+        $academy = Academy::all();
+        $permit_each_unit = Permission::getAllPermissions();
+
+        foreach($academy as $row){
+            $academy_list[$row->Academy_No] = $row->Academy_Name;
+        }
+        return view('unitsManager', ['academy_list' => $academy_list, 'units' => $units, 'admin' => true, 'add_status' => '', 'permit_each_unit' => $permit_each_unit]);
     }
     public function addAccount(Request $request) {
         $body = $request->getContent();
@@ -130,6 +136,28 @@ class UserController extends Controller
 
     }
 
+    public function changePermission(Request $request) {
+        try {
+            $formData = $request->all();
+            foreach($formData as $key => $data) {
+                if ($data === "write" || $data === "readonly") {
+                    $unitnos[] = $key;
+                    $permits[] = $data;
+                }
+            }
+            $unitnos = array_map(function ($key) {
+                return explode('-', $key)[0];
+            }, $unitnos);
+            
+            Permission::updatePermissions($unitnos, $permits);
+    
+            return response()->json(['status' => 'success', 'msg' => '更改成功']);
+        } catch (\Exception $e) {
+            $this->output->writeln($e->getMessage());
+            return response()->json(['status' => 'failed', 'msg' => '發生錯誤']);            
+        }
+    }
+
     private function randomPassword($len = 8) {
 
         //enforce min length 8
@@ -162,4 +190,6 @@ class UserController extends Controller
         //shuffle the password string before returning!
         return str_shuffle($password);
     }
+
+    
 }

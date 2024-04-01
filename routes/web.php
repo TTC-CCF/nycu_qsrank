@@ -27,14 +27,14 @@ Route::get('/import/{mode}', '\App\Http\Controllers\DataController@showImport')-
 Route::post('/new', '\App\Http\Controllers\DataController@add')->middleware('auth');
 Route::post('/import', '\App\Http\Controllers\DataController@import')->middleware('auth');
 
-Route::post('/delete', '\App\Http\Controllers\DataController@delete')->middleware(['auth', 'permit']);
+Route::post('/delete', '\App\Http\Controllers\DataController@delete')->middleware(['auth', 'permission']);
 
-Route::post('/edit', '\App\Http\Controllers\DataController@edit')->middleware(['auth', 'permit']);
-Route::post('/edit_bsa_ms', '\App\Http\Controllers\DataController@edit_bsa_ms')->middleware(['auth', 'permit']);
+Route::post('/edit', '\App\Http\Controllers\DataController@edit')->middleware(['auth', 'permission']);
+Route::post('/edit_bsa_ms', '\App\Http\Controllers\DataController@edit_bsa_ms')->middleware(['auth', 'permission']);
 
 Route::get('/units', '\App\Http\Controllers\UserController@showUnits')->middleware('admin');
 Route::put('/units/account', '\App\Http\Controllers\UserController@editAccount')->middleware('admin');
 Route::put('/units/password', '\App\Http\Controllers\UserController@changeAccountPassword')->middleware('admin');
 Route::post('/units/account', '\App\Http\Controllers\UserController@addAccount')->middleware('admin');
+Route::post('/units/permission', '\App\Http\Controllers\UserController@changePermission')->name('permission')->middleware('admin');
 Route::delete('/units/account', '\App\Http\Controllers\UserController@deleteAccount')->middleware('admin');
-

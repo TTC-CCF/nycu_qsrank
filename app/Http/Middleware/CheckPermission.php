@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Employer_list;
 use App\Models\Scholar_list;
+use App\Models\Permission;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,21 +23,28 @@ class CheckPermission
         $unitno = Session::get("id");
         $table = $mode === "scholar" ? new Scholar_list : new Employer_list;
 
-        if ($request->input("SN") !== null && $unitno !== 0) {
-            $sn = $request->input("SN");
-            $data = $table->where("SN", $sn)->first();
+        $permit = Permission::getPermission($unitno);
 
-            if ($data->unitno !== $unitno) {
-                return response()->json(['message' => 'Unauthorized action'], 403);
-            }
-        }
+        if ($permit === "readonly" && $unitno !== 0) {
+            return response()->json(['message' => 'Unauthorized action'], 403);
 
-        if ($request->input("sn_list") !== null && $unitno !== 0) {
-            $sn_list = $request->input("sn_list");
-            $data = $table->whereIn("SN", $sn_list)->get();
-            foreach($data as $row) {
-                if ($row->unitno !== $unitno) {
+        } elseif ($permit === "write") {
+            if ($request->input("SN") !== null && $unitno !== 0) {
+                $sn = $request->input("SN");
+                $data = $table->where("SN", $sn)->first();
+
+                if ($data->unitno !== $unitno) {
                     return response()->json(['message' => 'Unauthorized action'], 403);
+                }
+            }
+
+            if ($request->input("sn_list") !== null && $unitno !== 0) {
+                $sn_list = $request->input("sn_list");
+                $data = $table->whereIn("SN", $sn_list)->get();
+                foreach ($data as $row) {
+                    if ($row->unitno !== $unitno) {
+                        return response()->json(['message' => 'Unauthorized action'], 403);
+                    }
                 }
             }
         }

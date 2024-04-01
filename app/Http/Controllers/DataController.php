@@ -21,7 +21,6 @@ class DataController extends Controller
         $this->output = new \Symfony\Component\Console\Output\ConsoleOutput();
     }
     public function edit(Request $request){
-        $this->output->writeln($request);
         $mode = Session::get('list_mode');
         $key = $request->input('key');
         $new_data = $request->input('new_data');

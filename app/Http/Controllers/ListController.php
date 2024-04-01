@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Academy;
+use App\Models\Permission;
 use App\Models\Scholar_list;
 use App\Models\Employer_list;
 use App\Models\ScholarYearResult;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+
 
 class ListController extends Controller
 {
@@ -80,11 +82,13 @@ class ListController extends Controller
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
         $view_name = ($mode == 'scholar') ? 'scholarList' : 'employerList';
 
-        $unit = $request->query("unit") ?? 1;
+        $unit = $request->query("unit") ?? ($id === 0 ? 1 : $id);
 
         $static_data = $this->getStaticData($mode);
 
         [$list, $year_result] = $table->getList($unit);
+
+        $permit = Permission::getPermission($id);
 
         // highlight the row that has duplicated email address
         $table->getDuplicatePerson($list);
@@ -92,6 +96,7 @@ class ListController extends Controller
         return view(
             $view_name,
             [
+                'permit' => $permit,
                 'unit' => $unit,
                 'list' => $list,
                 'admin' => $id == 0,

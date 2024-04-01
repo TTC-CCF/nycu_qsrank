@@ -2,6 +2,12 @@ let current_unit = null;
 let current_data = null;
 let deleteElement = null;
 
+let permissionForm = document.getElementById('permission-form');
+permissionForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    await postPermissions();
+});
+
 function show_unit(unit){
     current_unit = unit;
     let units = document.getElementById('units').value;
@@ -314,4 +320,49 @@ function updateAfterDelete(){
         }
         
     }
+}
+
+function changeAll(mode) {
+    let radios = document.getElementsByClassName(`permit-${mode}`);
+
+    for (let i = 0; i < radios.length; ++i) {
+        let input = radios[i].getElementsByTagName('input')[0];
+        input.checked = true;
+    }
+}
+
+function clearAll(mode) {
+    let radio = document.getElementById(`all-permit-${mode}`);
+
+    radio.checked = false;
+}
+
+async function postPermissions() {
+    let form = document.getElementById("permission-form");
+    let formData = new FormData(form);
+    let csrf = document.querySelector('meta[name="_token"]').content;
+    
+    // send 
+    await fetch('/units/permission', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrf
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result['status'] == 'success') {
+            document.getElementById('successModal-btn').click();
+            document.getElementById('success-msg').innerText = result['msg'];
+        } else {
+            document.getElementById('failedModal-btn').click();
+            document.getElementById('failed-msg').innerText = result['msg'];
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('failedModal-btn').click();
+        document.getElementById('failed-msg').innerText = 'Internal Server Error';
+    });
 }

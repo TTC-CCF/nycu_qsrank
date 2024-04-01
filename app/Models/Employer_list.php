@@ -104,7 +104,7 @@ class Employer_list extends Model
                     $hashDuplicated[$row->Email],
                     fn($value) => $value !== $row->資料提供單位
                 );
-                $row->dupUnits = implode(", ", $row->dupUnits);
+                $row->dupUnits = implode("\n", $row->dupUnits);
             } else {
                 $row->dupUnits = null;
             }

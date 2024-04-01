@@ -186,7 +186,7 @@
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td row="dupUnits">
-                            {{ $row["dupUnits"] }}
+                            <pre>{{ $row["dupUnits"] }}</pre>
                         </td>
                         @if ($admin)
                         <td class="editable" row="寄送Email日期" type="date">

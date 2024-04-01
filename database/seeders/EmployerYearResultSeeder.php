@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Employer_list;
+use App\Models\EmployerYearResult;
 
 class EmployerYearResultSeeder extends Seeder
 {
@@ -13,9 +14,9 @@ class EmployerYearResultSeeder extends Seeder
      */
     public function run(): void
     {
-        $years = DB::table("Employer_list")->select("SN", "year")->get();
+        $years = Employer_list::select("SN", "year")->get();
         foreach($years as $year) {
-            DB::table("employer_year_result")->insert([
+            EmployerYearResult::create([
                 "employer_id" => $year->SN,
                 "year" => $year->year,
                 "result" => rand(0, 1),
