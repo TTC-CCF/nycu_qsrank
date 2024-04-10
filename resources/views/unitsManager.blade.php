@@ -141,13 +141,18 @@
         </div>
     </div>
 
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="alert alert-success">
+            <div class="modal-content">
+            <div class="alert alert-success mb-0">
                 <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <h4 id="success-msg"><i class="fas fa-check m-1"></i></h4>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
