@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class Employer_list extends Model
 {
@@ -135,5 +136,51 @@ class Employer_list extends Model
         }
         
         return [$list, $year_result];
+    }
+
+    public function addRecord($unitno, $request, $admin) 
+    {
+        if ($unitno == 0) {
+            $unitname = $request->input('UnitName');
+            $unitno = Academy::where('Academy_Name', $unitname)->get(['Academy_No'])[0]['Academy_No'];
+        }
+
+        $row = new Employer_list;
+        DB::beginTransaction();
+        try{
+            $row->SN = $request->input('SN');
+            $row->year = $request->input('year');
+            $row->unitno = $unitno;
+            $row->資料提供單位 = $request->input('UnitName');
+            $row->資料提供者 = $request->input('Provider');
+            $row->資料提供者Email = $request->input('UnitEmail');
+            $row->Title = $request->input('Title') == '其他' ? $request->input('OtherTitle') : $request->input('Title');
+            $row->First_name = $request->input('FirstName');
+            $row->Last_name = $request->input('LastName');
+            $row->Chinese_name = $request->input('ChineseName');
+            $row->Position = $request->input('Position');
+            $row->Industry = $request->input('Industry');
+            $row->CompanyName = $request->input('CompanyName');
+            $row->Location = $request->input('Location');
+            $row->BroadSubjectArea = $request->input('BroadSubjectArea');
+            $row->MainSubject = $request->input('MainSubject');
+            $row->Email = $request->input('Email');
+            $row->Phone = $request->input('Phone');
+            if ($admin && $request->exists('今年是否同意參與QS')){
+                $rec = new EmployerYearResult;
+                $rec->employer_id = $row->SN;
+                $rec->year = $row->year;
+                $rec->result = true;
+                $rec->save();     
+            }
+            $row->save();
+
+            DB::commit();
+        }
+        catch (Exception $err) {
+            $this->output->writeln($err);
+            DB::rollback();
+            throw $err;
+        }
     }
 }

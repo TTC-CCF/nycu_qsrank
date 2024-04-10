@@ -98,12 +98,13 @@
                         <th class="th-ms" scope="col">Main Subject</th>
                         <th class="th-country" scope="col">Location</th>
                         <th class="th-email" scope="col">Email</th>
-                        <th class="th-phone" scope="col">Phone</th>
-                        <th class="th-dupUnits" scope="col">重複系所</th>
-                        <th class="th-senddate" scope="col">寄送Email日期</th>
                         @foreach($year_results as $year => $_)
                             <th class="th-currentqs" scope="col">{{ $year }}QS</th>
                         @endforeach
+                        <th class="th-senddate" scope="col">寄送Email日期</th>
+                        <th class="th-phone" scope="col">Phone</th>
+                        <th class="th-dupUnits" scope="col">重複系所</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -181,22 +182,11 @@
                             {{ $row['Email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Phone">
-                            {{ $row['Phone'] }}
-                            <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
-                        <td row="dupUnits">
-                            <pre>{{ $row["dupUnits"] }}</pre>
-                        </td>
                         @if ($admin)
-                        <td class="editable" row="寄送Email日期" type="date">
-                            {{ $row['寄送Email日期'] }}
-                            <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
-
+                        
                             @foreach($year_results as $year => $result) 
 
-                            <td class="editable" row="{{$year}}QS" type="checkbox" isCheck={{ $result[$row["SN"]] }}>
+                            <td class="editable" row="{{$year}}同意參與QS" type="checkbox" isCheck={{ $result[$row["SN"]] }}>
                                 @if ($result[$row["SN"]])
                                 <i class="fa-solid fa-check"></i>
                                 @else
@@ -206,12 +196,14 @@
                                 <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                             </td>
                             @endforeach
+                            <td class="editable" row="寄送Email日期" type="date">
+                                {{ $row['寄送Email日期'] }}
+                                <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
                         @else
-                        <td row="寄送Email日期">
-                            {{ $row['寄送Email日期'] }}
-                        </td>
+                        
                             @foreach($year_results as $year => $result) 
-                                <td row="{{$year}}QS" type="checkbox">
+                                <td row="{{$year}}同意參與QS" type="checkbox">
                                     @if ($result[$row["SN"]])
                                     <i class="fa-solid fa-check"></i>
                                     @else
@@ -219,7 +211,18 @@
                                     @endif
                                 </td>
                             @endforeach
+                            <td row="寄送Email日期">
+                                {{ $row['寄送Email日期'] }}
+                            </td>
                         @endif
+                        <td @if(session('id') === $unit || $admin) class="editable" @endif row="Phone">
+                            {{ $row['Phone'] }}
+                            <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </td>
+                        <td row="dupUnits">
+                            <pre>{{ $row["dupUnits"] }}</pre>
+                        </td>
+                       
                     </tr>
                     @endforeach
                 </tbody>

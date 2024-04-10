@@ -7,3 +7,8 @@ php artisan migrate
 php artisan app:insert-static   
 # Hash users' password
 php artisan hash:users
+
+# Seeding database
+php artisan db:seed EmployerYearResultSeeder
+php artisan db:seed PermissionSeeder
+php artisan db:seed ScholarYearResultSeeder

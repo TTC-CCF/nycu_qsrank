@@ -28,9 +28,9 @@ class DataController extends Controller
         $isCheckbox = $request->input('isCheckbox');
 
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-
+        $this->output->writeln($request);
         if ($isCheckbox) {
-            $year = substr($key, 0, -2);
+            $year = substr($key, 0, 4);
             $table->updateYearResult($sn, $year, $new_data);
         } elseif ($key === '資料提供單位') {
             $table->updateUnitno($sn, $new_data);
@@ -56,56 +56,14 @@ class DataController extends Controller
         $mode = Session::get('list_mode');
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
         $unitno = Session::get('id');
-        $admin = $unitno == 0 ? true : false;
+        $admin = $unitno == 0;
         $this->output->writeln($request);
 
-        if ($unitno == 0) {
-            $unitname = $request->input('UnitName');
-            $unitno = Academy::where('Academy_Name', $unitname)->get(['Academy_No'])[0]['Academy_No'];
-        }
-
-        DB::beginTransaction();
-        try{
-            $table->SN = $request->input('SN');
-            $table->year = $request->input('year');
-            $table->unitno = $unitno;
-            $table->資料提供單位 = $request->input('UnitName');
-            $table->資料提供者 = $request->input('Provider');
-            $table->資料提供者Email = $request->input('UnitEmail');
-            $table->Title = $request->input('Title') == '其他' ? $request->input('OtherTitle') : $request->input('Title');
-            $table->First_name = $request->input('FirstName');
-            $table->Last_name = $request->input('LastName');
-            $table->Chinese_name = $request->input('ChineseName');
-            if ($mode == 'scholar'){
-                $table->Job_title = $request->input('JobTitle');
-                $table->Department = $request->input('Department');
-                $table->Institution = $request->input('Institution');
-                $table->Country = $request->input('Country');
-            }
-            else{
-                $table->Position = $request->input('Position');
-                $table->Industry = $request->input('Industry');
-                $table->CompanyName = $request->input('CompanyName');
-                $table->Location = $request->input('Location');
-            }
-            $table->BroadSubjectArea = $request->input('BroadSubjectArea');
-            $table->MainSubject = $request->input('MainSubject');
-            $table->Email = $request->input('Email');
-            $table->Phone = $request->input('Phone');
-            if ($admin) {
-                if ($request->exists('今年是否同意參與QS'))
-                    $table->今年是否同意參與QS = true;
-                else
-                    $table->今年是否同意參與QS = false;
-            }
-            $table->save();
-
-            DB::commit();
+        try {
+            $table->addRecord($unitno, $request, $admin);
             return redirect()->route('list')->with('status', 'Successfully add '.$mode.' data');
-        }
-        catch (Exception $err) {
-            $this->output->writeln($err);
-            DB::rollback();
+
+        } catch (Exception $err) {
             return redirect()->route('list')->with('status', 'Failed to add '.$mode.' data');
         }
     }

@@ -71,6 +71,22 @@ CREATE TABLE  IF NOT EXISTS `Employer_list` (
   `去年是否同意參與QS` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO Employer_list (`SN`, `year`, `資料提供單位編號`, `資料提供單位`, `資料提供單位Email`, `Title`, `First_name`, `Last_name`, `Chinese_name`, `Position`, `Industry`, `CompanyName`, `BroadSubjectArea`, `MainSubject`, `Location`, `Email`, `Phone`, `去年是否同意參與QS`) VALUES
+(0, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'Hsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'hsuyun@email.com', '', 'V'),
+(1, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'suu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'suyun@email.com', '', 'V'),
+(2, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'uu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'uyun@email.com', '', 'V'),
+(3, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'yun@email.com', '', 'V'),
+(4, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'un', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'un@email.com', '', 'V'),
+(5, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'ddHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'ddhsuyun@email.com', '', 'V'),
+(6, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'sHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'shsuyun@email.com', '', 'V'),
+(7, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhsuyun@email.com', '', 'V'),
+(8, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedshsuyun@email.com', '', 'V'),
+(9, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhssuyun@email.com', '', 'V'),
+(10, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsudfyun@email.com', '', 'V'),
+(11, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehcvcsuyun@email.com', '', 'V'),
+(12, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehssuyun@email.com', '', 'V'),
+(13, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsuyudfdn@email.com', '', 'V');
+
 --
 -- Indexes for table `Employer_list`
 --
@@ -110,26 +126,26 @@ CREATE TABLE IF NOT EXISTS  `Scholar_list` (
 --
 
 INSERT INTO `Scholar_list` (`SN`, `year`, `資料提供單位編號`, `資料提供單位`, `資料提供單位Email`, `Title`, `First_name`, `Last_name`, `Chinese_name`, `Job_title`, `Department`, `Institution`, `BroadSubjectArea`, `MainSubject`, `Country`, `Email`, `Phone`, `去年是否同意參與QS`) VALUES
-(1, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Arnab Roy', 'Chowdhury', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Russia', 'achowdhury@hse.ru', NULL, 'V'),
-(2, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Barbara', 'Oakley', '', 'Professor', 'School of Engineering and Computer Science', 'Oakland University', '', '', 'United States', 'oakley@oakland.edu', '', ''),
-(3, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Bjørn Enge', 'Bertelsen', NULL, 'Professor', 'Department of Social Anthropology', 'University of Bergen', NULL, NULL, 'Norway', 'Bjorn.Bertelsen@uib.no', NULL, 'V'),
-(4, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Brett', 'Neilson', NULL, 'Professor', 'Institute for Culture and Society', 'Western Sydney University', NULL, NULL, 'Australia', 'b.neilson@westernsydney.edu.au', NULL, 'V'),
-(5, 2022, '01', '人文社會學院', NULL, 'Dr.', 'C.-T. James', 'Huang', NULL, 'Professor', 'Department of Linguistics', 'Harvard University', NULL, NULL, 'United States', 'ctjhuang@fas.harvard.edu', NULL, ''),
-(6, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Carlos', 'Gussenhoven', NULL, 'Professor Emeritus', 'Centre for Language Studies', 'Radboud University', NULL, NULL, 'The Netherlands', 'carlos.gussenhoven@ru.nl', NULL, ''),
-(7, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Chen-Pang', 'Yeang', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Canada', 'achowdhury@hse.ru', NULL, ''),
-(8, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Chingching', 'Chang', NULL, 'Distinguished researcher', 'School of Sociology', 'HSE University', NULL, NULL, 'Taiwan', 'achowdhury@hse.ru', NULL, ''),
-(9, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Chin-Teng', 'Lin', NULL, 'Distinguished Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Australia', 'achowdhury@hse.ru', NULL, 'V'),
-(10, 2022, '01', '人文社會學院', NULL, 'Mr.', '東熙', '李', NULL, 'musician', 'freelancer', 'Paekche Institute Of The Arts', NULL, NULL, 'South Korea', 'howtoeatsun@gmail.com', NULL, ''),
-(11, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Eun-Ju', 'Lee', NULL, 'Professor', 'Department of Communication', 'Seoul National University', NULL, NULL, 'South Korea', 'eunju0204@snu.ac.kr', NULL, ''),
-(12, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Fabian', 'Januszewski', '', 'Professor', '', 'Paderborn University', '', '', 'Germany', 'drjanosch@gmail.com', '', ''),
-(13, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Gert', 'Cauwenberghs', '', 'Professor', 'Institute for Neural Computation', 'University of California San Diego', '', '', 'United States', 'gert@ucsd.edu', '', ''),
-(14, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Heong Hong', 'Por', NULL, 'Lecturer', 'School of Sociology', 'HSE University', NULL, NULL, 'Malaysia', 'achowdhury@hse.ru', NULL, ''),
-(15, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Herng', 'Su', NULL, 'Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Taiwan', 'achowdhury@hse.ru', NULL, 'V'),
-(16, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Hua-Hua', 'Chang', NULL, 'Charles R. Hicks Chair Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'United States', 'achowdhury@hse.ru', NULL, 'V'),
-(17, 2022, '01', '人文社會學院', NULL, 'Dr.', 'Ja Ian', 'Chong', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Singapore', 'chong.jaian@gmail.com', NULL, 'V'),
-(33, 2023, '03', '工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', '', '', '', '', '', '', '', NULL),
-(34, 2023, '03', '工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', '', '', '', '', '', '', '', NULL),
-(35, 2023, '03', '工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', 'dfds', '', '', '', '', '', '', '');
+(1, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Arnab Roy', 'Chowdhury', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Russia', 'achowdhury@hse.ru', NULL, 'V'),
+(2, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Barbara', 'Oakley', '', 'Professor', 'School of Engineering and Computer Science', 'Oakland University', '', '', 'United States', 'oakley@oakland.edu', '', ''),
+(3, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Bjørn Enge', 'Bertelsen', NULL, 'Professor', 'Department of Social Anthropology', 'University of Bergen', NULL, NULL, 'Norway', 'Bjorn.Bertelsen@uib.no', NULL, 'V'),
+(4, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Brett', 'Neilson', NULL, 'Professor', 'Institute for Culture and Society', 'Western Sydney University', NULL, NULL, 'Australia', 'b.neilson@westernsydney.edu.au', NULL, 'V'),
+(5, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'C.-T. James', 'Huang', NULL, 'Professor', 'Department of Linguistics', 'Harvard University', NULL, NULL, 'United States', 'ctjhuang@fas.harvard.edu', NULL, ''),
+(6, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Carlos', 'Gussenhoven', NULL, 'Professor Emeritus', 'Centre for Language Studies', 'Radboud University', NULL, NULL, 'The Netherlands', 'carlos.gussenhoven@ru.nl', NULL, ''),
+(7, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Chen-Pang', 'Yeang', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Canada', 'test@hse.ru', NULL, ''),
+(8, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Chingching', 'Chang', NULL, 'Distinguished researcher', 'School of Sociology', 'HSE University', NULL, NULL, 'Taiwan', 'tes1@hse.ru', NULL, ''),
+(9, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Chin-Teng', 'Lin', NULL, 'Distinguished Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Australia', 'ttrr@hse.ru', NULL, 'V'),
+(10, 2022, '01', '01人文社會學院', NULL, 'Mr.', '東熙', '李', NULL, 'musician', 'freelancer', 'Paekche Institute Of The Arts', NULL, NULL, 'South Korea', 'howtoeatsun@gmail.com', NULL, ''),
+(11, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Eun-Ju', 'Lee', NULL, 'Professor', 'Department of Communication', 'Seoul National University', NULL, NULL, 'South Korea', 'eunju0204@snu.ac.kr', NULL, ''),
+(12, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Fabian', 'Januszewski', '', 'Professor', '', 'Paderborn University', '', '', 'Germany', 'drjanosch@gmail.com', '', ''),
+(13, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Gert', 'Cauwenberghs', '', 'Professor', 'Institute for Neural Computation', 'University of California San Diego', '', '', 'United States', 'gert@ucsd.edu', '', ''),
+(14, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Heong Hong', 'Por', NULL, 'Lecturer', 'School of Sociology', 'HSE University', NULL, NULL, 'Malaysia', 'howdhury@hse.ru', NULL, ''),
+(15, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Herng', 'Su', NULL, 'Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Taiwan', 'achdhury@hse.ru', NULL, 'V'),
+(16, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Hua-Hua', 'Chang', NULL, 'Charles R. Hicks Chair Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'United States', 'achowdhu@hse.ru', NULL, 'V'),
+(17, 2022, '01', '01人文社會學院', NULL, 'Dr.', 'Ja Ian', 'Chong', NULL, 'Assistant Professor', 'School of Sociology', 'HSE University', NULL, NULL, 'Singapore', 'chong.jaian@gmail.com', NULL, 'V'),
+(33, 2023, '03', '03工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', '', '', '', '', '', 'A1@ii.com', NULL, ''),
+(34, 2023, '03', '03工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', '', '', '', '', '', 'A2@ii.com', NULL, ''),
+(35, 2023, '03', '03工學院', '', 'Ms.', 'Liu', 'yujiun', '劉育君', '', '', '', '', '', '', 'A3@ii.com', NULL, '');
 
 --
 -- Indexes for table `Scholar_list`
@@ -232,9 +248,7 @@ CREATE TABLE IF NOT EXISTS  `users` (
 
 INSERT INTO `users` 
 (`SN`, `account`, `password`, `unit`, `unitno`, `email`, `role`) VALUES
-(0, 'Admin', 'test', 'Cirda', 0, 'Cirda', 0),
-(1, 'COA', 'test', '人文社會學院', 1, NULL, 1),
-(3, 'test', 'test', '工學院', 3, NULL, 1);
+(0, 'Admin', 'test', 'Cirda', 0, 'Cirda', 0);
 
 --
 -- Indexes for table `users`
