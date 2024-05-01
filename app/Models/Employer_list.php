@@ -115,22 +115,25 @@ class Employer_list extends Model
 
     public function getList(int $unitno) 
     {
+        $maximumYear = date("Y") + 1;
         $minimumYear = EmployerYearResult::min("year");
+        $minimumYear = $minimumYear > $maximumYear - 5 ? $minimumYear : $maximumYear - 5;
         $list = self::where("unitno", $unitno)->orderBy('資料提供單位')->orderBy('SN')->get();
 
         // Constructing year result dataframe
-        for ($i = $minimumYear; $i <= date("Y"); $i++) {
+        for ($i = $maximumYear; $i >= $minimumYear; $i--) {
             $year_result[$i] = [];
         }
-
+        $output = new \Symfony\Component\Console\Output\ConsoleOutput;
         foreach ($list as $person) {
             $results = $person->yearResults()->select("employer_id", "year", "result")->get();
+            $output->writeln($results);
             foreach ($results as $result) {
                 $year_result[$result->year][$result->employer_id] = $result->result;
             }
             foreach ($year_result as $year => $_) {
                 if (!isset($year_result[$year][$person->SN]))
-                    $year_result[$year][$person->SN] = 0;
+                    $year_result[$year][$person->SN] = -1;
             }
 
         }
@@ -178,7 +181,6 @@ class Employer_list extends Model
             DB::commit();
         }
         catch (Exception $err) {
-            $this->output->writeln($err);
             DB::rollback();
             throw $err;
         }

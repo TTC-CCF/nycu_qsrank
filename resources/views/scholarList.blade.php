@@ -109,7 +109,7 @@
                         <th class="th-country" scope="col">Country</th>
                         <th class="th-email" scope="col">Email</th>
                         @foreach($year_results as $year => $_)
-                            <th class="th-currentqs" scope="col">{{ $year }}QS</th>
+                            <th class="th-currentqs" scope="col">{{ $year }}同意參與QS</th>
                         @endforeach
                         <th class="th-senddate" scope="col">寄送Email日期</th>
                         <th class="th-phone" scope="col">Phone</th>
@@ -200,9 +200,9 @@
                             @foreach($year_results as $year => $result) 
 
                             <td class="editable" row="{{$year}}同意參與QS" type="checkbox" isCheck={{ $result[$row["SN"]] }}>
-                                @if ($result[$row["SN"]])
+                                @if ($result[$row["SN"]] === 1)
                                 <i class="fa-solid fa-check"></i>
-                                @else
+                                @elseif ($result[$row["SN"]] === 0)
                                 <i class="fa-solid fa-times"></i>
                                 @endif
                                 
@@ -217,9 +217,9 @@
                         
                             @foreach($year_results as $year => $result) 
                                 <td row="{{$year}}同意參與QS" type="checkbox">
-                                    @if ($result[$row["SN"]])
+                                    @if ($result[$row["SN"]] === 1)
                                     <i class="fa-solid fa-check"></i>
-                                    @else
+                                    @elseif ($result[$row["SN"]] === 0)
                                     <i class="fa-solid fa-times"></i>
                                     @endif
                                 </td>

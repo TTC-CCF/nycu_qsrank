@@ -116,8 +116,9 @@ class Scholar_list extends Model
 
     public function getList(int $unitno) 
     {
+        $maximumYear = date("Y") + 1;
         $minimumYear = ScholarYearResult::min("year");
-        $maximumYear = max(ScholarYearResult::max("year"), date("Y"));
+        $minimumYear = $minimumYear > $maximumYear - 5 ? $minimumYear : $maximumYear - 5;
         $list = self::where("unitno", $unitno)->orderBy('資料提供單位')->orderBy('SN')->get();
 
         // Constructing year result dataframe
@@ -132,7 +133,7 @@ class Scholar_list extends Model
             }
             foreach ($year_result as $year => $_) {
                 if (!isset($year_result[$year][$person->SN]))
-                    $year_result[$year][$person->SN] = 0;
+                    $year_result[$year][$person->SN] = -1;
             }
 
         }
