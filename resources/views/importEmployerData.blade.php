@@ -50,8 +50,9 @@
 
             </div>
         </nav> 
+        <div >not implemented</div
     
-        <h1>匯入雇主資料</h1>
+        {{-- <h1>匯入雇主資料</h1>
         <hr/>
         <div id="afterDropArea"></div>
         <div id="dropArea">
@@ -66,7 +67,7 @@
         
                 </div>
             </div>
-        </div>
+        </div> --}}
         
     </div>
 

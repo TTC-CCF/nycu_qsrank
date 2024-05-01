@@ -16,6 +16,7 @@
 
 </head>
 
+
 <body>
 
     <div class="list-container">
@@ -51,7 +52,8 @@
             </div>
         </nav> 
     
-        <h1>匯入學者資料</h1>
+        <div>not implemented</div
+        {{-- <h1>匯入學者資料</h1>
         <hr/>
         <div id="afterDropArea"></div>
         <div id="dropArea">
@@ -66,7 +68,7 @@
         
                 </div>
             </div>
-        </div>
+        </div> --}}
         
     </div>
 
