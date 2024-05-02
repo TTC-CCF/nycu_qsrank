@@ -85,7 +85,7 @@ class ListController extends Controller
         $unit = $request->query("unit") ?? ($id === 0 ? 1 : $id);
 
         $static_data = $this->getStaticData($mode);
-
+        
         [$list, $year_result] = $table->getList($unit);
 
         $permit = Permission::getPermission($id);

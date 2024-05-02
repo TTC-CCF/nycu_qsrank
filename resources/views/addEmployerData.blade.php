@@ -69,13 +69,13 @@
                     @if ($unit !== 'Admin')
                     <div class="form-group col-md-4">
                         <label for="unit">資料提供單位</label>
-                        <input class="form-control" type="text" id='unit' name="UnitName" value="{{ $unit }}" readonly>
+                        <input class="form-control" type="text" id='unit' name="資料提供單位" value="{{ $unit }}" readonly>
                     </div>
                     
                     @else
                     <div class="form-group col-md-4">
                         <label for="unit">資料提供單位 <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                        <select id="unit" class="form-control" name="UnitName" form="sendForm" required>
+                        <select id="unit" class="form-control" name="資料提供單位" form="sendForm" required>
                             <option hidden value>請選擇單位</option>
                             @foreach ($academy_list as $ac)
                             <option value="{{ $ac }}">{{ $ac }}</option>
@@ -85,17 +85,16 @@
                     @endif
                     <div class="form-group col-md-4">
                         <label for="provider">資料提供者 (選填)</label>
-                        <input class="form-control" type="text" id='provider' name="Provider" value="{{ $unit }}">
+                        <input class="form-control" type="text" id='provider' name="資料提供者" value="{{ $unit }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="unitEmail">資料提供者Email (選填)<i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                        <input class="form-control" type="text" id='unitEmail' name="UnitEmail" value="{{ $unitemail }}">
+                        <input class="form-control" type="text" id='unitEmail' name="資料提供者Email" value="{{ $unitemail }}">
                     </div>
                 </div>
 
                 <div class="form-group">
                 <label for="Title">Title <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                {{-- <input type="text" class="form-control" id="Title" name="Title"> --}}
                 <select name="Title" id="Title" class="form-control" form="sendForm" required>
                     <option hidden value>請選擇</option>
                     @foreach ($titles as $title)
@@ -107,15 +106,15 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                     <label for="FirstName">First Name <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                    <input type="text" class="form-control" id="FirstName" name="FirstName" required>
+                    <input type="text" class="form-control" id="FirstName" name="First Name" required>
                     </div>
                     <div class="form-group col-md-4">
                     <label for="LastName">Last Name <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                    <input type="text" class="form-control" id="LastName" name="LastName" required>
+                    <input type="text" class="form-control" id="LastName" name="Last Name" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="LastName">Chinese Name (選填)</label>
-                        <input type="text" class="form-control" id="ChineseName" name="ChineseName">
+                        <label for="ChineseName">Chinese Name (選填)</label>
+                        <input type="text" class="form-control" id="ChineseName" name="Chinese Name">
                     </div>
                 </div>
                 
@@ -127,16 +126,10 @@
                     <div class="form-group col-md-4">
                     <label for="Industry">Industry <i class="fa fa-asterisk" aria-hidden="true"></i></label> 
                     <input type="text" class="form-control" id="Industry" name="Industry" required>
-                    {{-- <select name="Industry" id="Industry" class="form-control" form="sendForm" required>
-                        <option hidden value>請選擇</option>
-                        @foreach ($industries as $industry)
-                        <option value="{{ $industry }}">{{ $industry }}</option>
-                        @endforeach
-                    </select>                     --}}
                     </div>
                     <div class="form-group col-md-4">
                     <label for="CompanyName">Company Name (選填)</label>
-                    <input type="text" class="form-control" id="CompanyName" name="CompanyName">
+                    <input type="text" class="form-control" id="CompanyName" name="Company Name">
                     </div>
                 </div>
 
@@ -144,7 +137,7 @@
 
                     <div class="form-group col-md-6">
                     <label for="BroadSubjectArea">Broad Subject Area <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                    <select id="BraodSubjectArea" class="form-control" name="BroadSubjectArea" form="sendForm" required>
+                    <select id="BraodSubjectArea" class="form-control" name="Broad Subject Area" form="sendForm" required>
                         <option hidden value>請選擇</option>
                         @foreach ($bsa_list as $bsa)
                         <option value="{{ $bsa }}">{{ $bsa }}</option>
@@ -153,7 +146,7 @@
                     </div>
                     <div class="form-group col-md-6">
                     <label for="MainSubject">Main Subject <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                    <select id="MainSubject" class="form-control" name="MainSubject" form="sendForm" required>
+                    <select id="MainSubject" class="form-control" name="Main Subject" form="sendForm" required>
                         <option hidden value>-----</option>
                     </select>
                     </div>

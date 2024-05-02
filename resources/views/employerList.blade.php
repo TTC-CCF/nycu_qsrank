@@ -119,67 +119,67 @@
                          
                         @if ($admin)
                         <td class="editable" row="資料提供單位">
-                            {{ $row['資料提供單位'] }}
+                            {{ $row['unit_name'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($academy_list))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         
                         @else
                         <td row="資料提供單位">
-                            {{ $row['資料提供單位'] }}
+                            {{ $row['unit_name'] }}
                         </td>
                         
                         @endif
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者">
-                            {{ $row['資料提供者'] }}
+                            {{ $row['provider'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="資料提供者Email">
-                            {{ $row['資料提供者Email'] }}
+                            {{ $row['provider_email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Title">
-                            {{ $row['Title'] }}
+                            {{ $row['title'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($titles))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="First_name">
-                            {{ $row['First_name'] }}
+                            {{ $row['first_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Last_name">
-                            {{ $row['Last_name'] }}
+                            {{ $row['last_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Chinese_name">
-                            {{ $row['Chinese_name'] }}
+                            {{ $row['chinese_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Position">
-                            {{ $row['Position'] }}
+                            {{ $row['position'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Industry">
-                            {{ $row['Industry'] }}
+                            {{ $row['industry'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($industries))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="CompanyName">
-                            {{ $row['CompanyName'] }}
+                            {{ $row['company_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="BroadSubjectArea">
-                            {{ $row['BroadSubjectArea'] }}
+                            {{ $row['broad_subject_area'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="MainSubject">
-                            {{ $row['MainSubject'] }}
+                            {{ $row['main_subject'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Location">
-                            {{ $row['Location'] }}
+                            {{ $row['location'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($countries))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Email">
-                            {{ $row['Email'] }}
+                            {{ $row['email'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         @if ($admin)
@@ -197,7 +197,7 @@
                             </td>
                             @endforeach
                             <td class="editable" row="寄送Email日期" type="date">
-                                {{ $row['寄送Email日期'] }}
+                                {{ $row['sent_email_date'] }}
                                 <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                             </td>
                         @else
@@ -212,11 +212,11 @@
                                 </td>
                             @endforeach
                             <td row="寄送Email日期">
-                                {{ $row['寄送Email日期'] }}
+                                {{ $row['sent_email_date'] }}
                             </td>
                         @endif
                         <td @if(session('id') === $unit || $admin) class="editable" @endif row="Phone">
-                            {{ $row['Phone'] }}
+                            {{ $row['phone'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
                         <td row="dupUnits">

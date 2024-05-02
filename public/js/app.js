@@ -245,14 +245,13 @@ function _export(filename) {
         var inputCol = row.querySelector('input');
         if (inputCol && inputCol.checked) {
             cols.forEach(col => {
+
                 if (!col.querySelector('input') && col.getAttribute('row') !== 'index') {
-                    // check if row attribute in ['去年是否同意參與QS', '今年是否同意參與QS']
-                    if (col.getAttribute('row') === '去年是否同意參與QS' || col.getAttribute('row') === '今年是否同意參與QS')
-                        rowData.push(col.getAttribute('ischeck') === '0' ? '否' : (col.getAttribute('ischeck') === '1' ? '是' : '未定'));
+                    if (/20\d{2}同意參與QS/.test(col.getAttribute('row')))
+                        rowData.push(col.getAttribute('ischeck') === "0" ? '不同意' : (col.getAttribute('ischeck') === "1" ? '同意' : ''));
                     else
                         rowData.push(col.textContent.trim());
                 }
-
             });
             data.push(rowData);
         }
@@ -343,15 +342,16 @@ function editing(element, sn, dropdownArray = null) {
         let selectElement = document.createElement('select');
         selectElement.classList.add('editing-block');
         // create option
-        for (let i = 0; i < dropdownArray.length; i++){
-            unit_option = document.createElement('option');
-            if (before_edit_string && dropdownArray[i] === before_edit_string){
+
+        Object.entries(dropdownArray).forEach(([key, value]) => {
+            let unit_option = document.createElement('option');
+            if (before_edit_string && value === before_edit_string){
                 unit_option.selected = true;
             }
-            unit_option.value = dropdownArray[i];
-            unit_option.textContent = dropdownArray[i];
+            unit_option.value = value;
+            unit_option.textContent = value;
             selectElement.appendChild(unit_option);
-        }
+        });
         
         if (parent_element.getAttribute('row') === 'Title') {
             selectElement.addEventListener('change', (event) => {

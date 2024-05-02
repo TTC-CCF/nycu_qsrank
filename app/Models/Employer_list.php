@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -15,6 +17,26 @@ class Employer_list extends Model
      *
      * @var string
      */
+
+    private $column_alias = [
+        '資料提供單位' => 'unit_name',
+        '資料提供者Email' => 'provider_email',
+        '資料提供者' => 'provider_name',
+        'Title' => 'title',
+        'First Name' => 'first_name',
+        'Last Name' => 'last_name',
+        'Chinese Name' => 'chinese_name',
+        'Position' => 'position',
+        'Industry' => 'industry',
+        'Company Name' => 'company_name',
+        'Broad Subject Area' => 'broad_subject_area',
+        'Main Subject' => 'main_subject',
+        'Location' => 'location',
+        '寄送Email日期' => 'sent_email_date',
+        'Email' => 'email',
+        'Phone' => 'phone',
+    ];
+
     protected $table = 'Employer_list';
     protected $primaryKey = 'SN';
     protected $fillable = array('*');
@@ -61,7 +83,7 @@ class Employer_list extends Model
             $unitno = Academy::where('Academy_Name', $new_data)->get(['Academy_No'])[0]['Academy_No'];
             self::where('SN', $sn)->update([
                 'unitno' => $unitno,
-                '資料提供單位' => $new_data,
+                'unit_name' => $new_data,
             ]);
 
             DB::commit();
@@ -85,25 +107,25 @@ class Employer_list extends Model
 
     public function getDuplicatePerson(&$originalData)
     {
-        $duplicated = self::select("SN", "Email", "資料提供單位")
+        $duplicated = self::select("SN", "Email", "unit_name")
             ->whereRaw('Email IN (SELECT Email FROM Employer_list GROUP BY Email HAVING COUNT(Email) > 1)')
             ->get();
 
         $hashDuplicated = [];
         foreach ($duplicated as $row) {
-            if (!isset($hashDuplicated[$row->Email])) 
+            if (!isset($hashDuplicated[$row->Email]))
                 $hashDuplicated[$row->Email] = [];
 
-            if (!in_array($row->資料提供單位, $hashDuplicated[$row->Email])) {
-                $hashDuplicated[$row->Email][] = $row->資料提供單位;
-            } 
+            if (!in_array($row->unit_name, $hashDuplicated[$row->Email])) {
+                $hashDuplicated[$row->Email][] = $row->unit_name;
+            }
         }
 
         foreach ($originalData as $row) {
             if (isset($hashDuplicated[$row->Email])) {
                 $row->dupUnits = array_filter(
                     $hashDuplicated[$row->Email],
-                    fn($value) => $value !== $row->資料提供單位
+                    fn($value) => $value !== $row->unit_name
                 );
                 $row->dupUnits = implode("\n", $row->dupUnits);
             } else {
@@ -113,12 +135,12 @@ class Employer_list extends Model
 
     }
 
-    public function getList(int $unitno) 
+    public function getList(int $unitno)
     {
         $maximumYear = date("Y") + 1;
         $minimumYear = EmployerYearResult::min("year");
         $minimumYear = $minimumYear > $maximumYear - 5 ? $minimumYear : $maximumYear - 5;
-        $list = self::where("unitno", $unitno)->orderBy('資料提供單位')->orderBy('SN')->get();
+        $list = self::where("unitno", $unitno)->orderBy('unit_name')->orderBy('SN')->get();
 
         // Constructing year result dataframe
         for ($i = $maximumYear; $i >= $minimumYear; $i--) {
@@ -137,12 +159,20 @@ class Employer_list extends Model
             }
 
         }
-        
+
         return [$list, $year_result];
     }
 
-    public function addRecord($unitno, $request, $admin) 
+    public function addRecord($unitno, $request, $admin)
     {
+        $columns = Schema::getColumnListing('Employer_list');
+        $tmp_col = [];
+        foreach ($columns as $col) {
+            $tmp_col[$col] = $col;
+        }
+        $columns = $tmp_col;
+        $columns = array_merge($columns, $this->column_alias);
+
         if ($unitno == 0) {
             $unitname = $request->input('UnitName');
             $unitno = Academy::where('Academy_Name', $unitname)->get(['Academy_No'])[0]['Academy_No'];
@@ -150,39 +180,107 @@ class Employer_list extends Model
 
         $row = new Employer_list;
         DB::beginTransaction();
-        try{
-            $row->SN = $request->input('SN');
-            $row->year = $request->input('year');
-            $row->unitno = $unitno;
-            $row->資料提供單位 = $request->input('UnitName');
-            $row->資料提供者 = $request->input('Provider');
-            $row->資料提供者Email = $request->input('UnitEmail');
-            $row->Title = $request->input('Title') == '其他' ? $request->input('OtherTitle') : $request->input('Title');
-            $row->First_name = $request->input('FirstName');
-            $row->Last_name = $request->input('LastName');
-            $row->Chinese_name = $request->input('ChineseName');
-            $row->Position = $request->input('Position');
-            $row->Industry = $request->input('Industry');
-            $row->CompanyName = $request->input('CompanyName');
-            $row->Location = $request->input('Location');
-            $row->BroadSubjectArea = $request->input('BroadSubjectArea');
-            $row->MainSubject = $request->input('MainSubject');
-            $row->Email = $request->input('Email');
-            $row->Phone = $request->input('Phone');
-            if ($admin && $request->exists('今年是否同意參與QS')){
+        try {
+            foreach ($request->all() as $key => $value) {
+                if (array_key_exists($key, $columns)) {
+                    $row->{$this->column_alias[$key]} = $value;
+                }
+            }
+
+            if ($admin && $request->exists('今年是否同意參與QS')) {
                 $rec = new EmployerYearResult;
                 $rec->employer_id = $row->SN;
                 $rec->year = $row->year;
                 $rec->result = true;
-                $rec->save();     
+                $rec->save();
             }
             $row->save();
 
             DB::commit();
-        }
-        catch (Exception $err) {
+        } catch (Exception $err) {
             DB::rollback();
             throw $err;
         }
+    }
+
+    public function importData($unitno, $data, $mode)
+    {
+        $columns = $this->getAllColumns();
+
+        if ($unitno !== 0 && $mode !== "data") {
+            throw new Exception("Invalid mode");
+        }
+
+        $row_counts = count($data->Email);
+        DB::beginTransaction();
+        try {
+            if ($mode === "data") {
+                /** insert or update employer data */
+                $emails = $data->Email;
+                $maxsn = self::max('SN');
+                $existingEmails = self::whereIn('Email', $emails)->get(['Email'])->pluck('Email')->toArray();
+
+                for ($i = 0; $i < $row_counts; $i++) {
+                    $data_unitno = intval(substr($data->資料提供單位[$i], 0, 2));
+                    if ($unitno !== 0 && $data_unitno !== $unitno) {
+                        throw new Exception("Unit number does not match");
+                    }
+
+                    $row = new Employer_list;
+
+                    if (in_array($data->Email[$i], $existingEmails)) {
+                        $row = self::where('Email', $data->Email[$i])->first();
+                    }
+
+                    foreach ($data as $key => $arr) {
+                        if (array_key_exists($key, $columns)) {
+                            $new_key = $columns[$key];
+                            $row->$new_key = $arr[$i];
+                        }
+                    }
+
+                    $row->unitno = $data_unitno;
+                    $row->SN = $row->SN ? $row->SN : ++$maxsn;
+                    $row->save();
+                }
+            } else if ($mode === "year result") {
+                /** insert or update employer year result  */
+                
+                $year_keys = array_filter(array_keys((array) $data), function ($key) {
+                    return preg_match("/^20\d{2}同意參與QS$/", $key);
+                });
+
+                for ($i = 0; $i < $row_counts; $i++) {
+                    $sn = self::where('Email', $data->Email[$i])->get(['SN'])[0]['SN'];
+                    if (!$sn) {
+                        throw new Exception("Email not found in database");
+                    }
+
+                    foreach ($year_keys as $key) {
+
+                        $year = intval(substr($key, 0, 4));
+                        $value = $data->$key[$i] === "同意" ? 1 :
+                            ($data->$key[$i] === "不同意" ? 0 : -1);
+                        $this->updateYearResult($sn, $year, $value);
+                    }
+                }
+            }
+            DB::commit();
+        } catch (Exception $err) {
+            DB::rollback();
+            throw $err;
+        }
+    }
+
+    private function getAllColumns()
+    {
+        $columns = Schema::getColumnListing('Employer_list');
+        $tmp_col = [];
+        foreach ($columns as $col) {
+            $tmp_col[$col] = $col;
+        }
+        $columns = $tmp_col;
+        $columns = array_merge($columns, $this->column_alias);
+        return $columns;
     }
 }

@@ -79,13 +79,13 @@ INSERT INTO Employer_list (`SN`, `year`, `資料提供單位編號`, `資料提�
 (4, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'un', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'un@email.com', '', 'V'),
 (5, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'ddHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'ddhsuyun@email.com', '', 'V'),
 (6, 2023, 1, '01人文社會學院', 'human_socialty@nycu.edu.tw', 'Mr.', 'sHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'shsuyun@email.com', '', 'V'),
-(7, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhsuyun@email.com', '', 'V'),
-(8, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedshsuyun@email.com', '', 'V'),
-(9, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhssuyun@email.com', '', 'V'),
-(10, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsudfyun@email.com', '', 'V'),
-(11, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehcvcsuyun@email.com', '', 'V'),
-(12, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehssuyun@email.com', '', 'V'),
-(13, 2023, 1, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsuyudfdn@email.com', '', 'V');
+(7, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhsuyun@email.com', '', 'V'),
+(8, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedshsuyun@email.com', '', 'V'),
+(9, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eedhssuyun@email.com', '', 'V'),
+(10, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsudfyun@email.com', '', 'V'),
+(11, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehcvcsuyun@email.com', '', 'V'),
+(12, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehssuyun@email.com', '', 'V'),
+(13, 2023, 3, '03工學院', 'engineering@nycu.edu.tw', 'Mr.', 'eeHsuu Yun', 'Hsu', '', '', '', '', '', '', 'Taiwan', 'eehsuyudfdn@email.com', '', 'V');
 
 --
 -- Indexes for table `Employer_list`

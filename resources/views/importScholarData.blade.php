@@ -52,8 +52,7 @@
             </div>
         </nav> 
     
-        <div>not implemented</div
-        {{-- <h1>匯入學者資料</h1>
+        <h1 id="mode" v="scholar">匯入學者資料</h1>
         <hr/>
         <div id="afterDropArea"></div>
         <div id="dropArea">
@@ -68,7 +67,7 @@
         
                 </div>
             </div>
-        </div> --}}
+        </div>
         
     </div>
 
@@ -82,11 +81,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                @if (intval(session("id")) === 0)
                 <p>請選擇匯入模式</p>
-                <input id="adddata" type="checkbox" value="add" checked>
-                <label for="adddata">增加新資料</label>
-                <input id="coverdata" type="checkbox" value="cover">
-                <label for="coverdata">覆蓋舊資料</label>
+                <input id="adddata" type="checkbox" value="year result">
+                <label for="adddata">更新雇主回覆同意內容</label>
+                <input id="coverdata" type="checkbox" value="data" checked>
+                <label for="coverdata">更新或增加學者身分資料</label>
+                @else
+                <p>將更新或增加{{ $unit_name }}學者資料</p>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
