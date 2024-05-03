@@ -34,7 +34,7 @@ class DataController extends Controller
         if ($isCheckbox) {
             $year = substr($key, 0, 4);
             $table->updateYearResult($sn, $year, $new_data);
-        } elseif ($key === '資料提供單位') {
+        } elseif ($key === '資料提供學院') {
             $table->updateUnitno($sn, $new_data);
         } else {
             $table->updateTextData($sn, $key, $new_data);
@@ -83,27 +83,24 @@ class DataController extends Controller
 
         $body = json_decode($request->getContent());
         $data = $body->data;
-        $import_mode = $body->mode;
 
         try {
-            $table->importData($unitno, $data, $import_mode);
+            $table->importData($unitno, $data);
             return response()->json(['status' => 'success', 'message' => 'Successfully import data'], 200);
 
         } catch (Exception $err) {
             $this->output->writeln($err);
-            return response()->json(['status' => 'fail', 'message' => 'Failed to import, please try again'], 200);
+            return response()->json(['status' => 'fail', 'message' => $err->getMessage()], 200);
 
         }
     }
     public function delete(Request $request)
     {
         try {
-            DB::beginTransaction();
-            $sn_list = $request->input('sn_list');
             $mode = Session::get('list_mode');
+            $sn_list = $request->input('sn_list');
             $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-            $deleted = $table::whereIn('SN', $sn_list)->delete();
-            DB::commit();
+            $table->deleteMultipleRecords($sn_list);
             return response()->json(['status' => 'success', 'message' => 'Successfully delete data'], 200);
         } catch (Exception $err) {
             $this->output->writeln($err);
@@ -211,7 +208,8 @@ class DataController extends Controller
         return view(
             $view_name,
             [
-                'unit' => $unit_name,
+                'unitno' => $unitno,
+                'unit_name' => $unit_name,
                 'unitemail' => $unit_email,
                 'academy_list' => $academy_list,
                 'bsa_list' => $bsa_list,

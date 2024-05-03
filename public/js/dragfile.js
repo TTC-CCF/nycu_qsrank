@@ -185,7 +185,8 @@ function _import() {
             data[key].push(tds[index].innerHTML);
         })
     });
-    var jsonData = JSON.stringify({ 'data': data, 'mode': $('input[type="checkbox"]:checked').val() });
+
+    var jsonData = JSON.stringify({ 'data': data});
 
     const csrf = document.querySelector('meta[name="_token"]').content;
     fetch('/import', {

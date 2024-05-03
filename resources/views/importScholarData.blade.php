@@ -81,12 +81,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                @if (intval(session("id")) === 0)
-                <p>請選擇匯入模式</p>
-                <input id="adddata" type="checkbox" value="year result">
-                <label for="adddata">更新雇主回覆同意內容</label>
-                <input id="coverdata" type="checkbox" value="data" checked>
-                <label for="coverdata">更新或增加學者身分資料</label>
+                @if (intval(session('id')) === 0)
+                <p>將更新或增加上傳名單內學者資料，包括每年度同意回復QS結果</p>
                 @else
                 <p>將更新或增加{{ $unit_name }}學者資料</p>
                 @endif

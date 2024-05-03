@@ -84,6 +84,7 @@ class ListController extends Controller
 
         $unit = intval($request->query("unit"));
         $unit = $unit === 0 ? 1 : $unit;
+        $unit = $id === 0 ? $unit : $id;
 
         $static_data = $this->getStaticData($mode);
         

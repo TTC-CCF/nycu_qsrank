@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +13,11 @@ use Exception;
 
 class Scholar_list extends Model
 {
+    use SoftDeletes;
+
     private $column_alias = [
-        '資料提供單位' => 'unit_name',
+        '資料提供學院' => 'unit_academy',
+        '資料提供系所' => 'unit_department',
         '資料提供者Email' => 'provider_email',
         '資料提供者' => 'provider_name',
         'Title' => 'title',
@@ -35,7 +39,7 @@ class Scholar_list extends Model
      *
      * @var string
      */
-    
+
     protected $table = 'Scholar_list';
     protected $primaryKey = 'SN';
     protected $fillable = array('*');
@@ -46,7 +50,7 @@ class Scholar_list extends Model
         return $this->hasMany(ScholarYearResult::class, 'scholar_id', 'SN');
     }
 
-    public function updateYearResult(int $sn, int $year, bool $new_data)
+    public function updateYearResult(int $sn, int $year, int $new_data)
     {
         $yearResult = ScholarYearResult::where('scholar_id', $sn)
             ->where('year', $year)
@@ -82,7 +86,7 @@ class Scholar_list extends Model
             $unitno = Academy::where('Academy_Name', $new_data)->get(['Academy_No'])[0]['Academy_No'];
             self::where('SN', $sn)->update([
                 'unitno' => $unitno,
-                'unit_name' => $new_data,
+                'unit_academy' => $new_data,
             ]);
 
             DB::commit();
@@ -107,25 +111,25 @@ class Scholar_list extends Model
 
     public function getDuplicatePerson(&$originalData)
     {
-        $duplicated = self::select("SN", "email", "unit_name")
+        $duplicated = self::select("SN", "email", "unit_academy")
             ->whereRaw('email IN (SELECT email FROM Scholar_list GROUP BY email HAVING COUNT(email) > 1)')
             ->get();
 
         $hashDuplicated = [];
         foreach ($duplicated as $row) {
-            if (!isset($hashDuplicated[$row->email])) 
+            if (!isset($hashDuplicated[$row->email]))
                 $hashDuplicated[$row->email] = [];
 
-            if (!in_array($row->unit_name, $hashDuplicated[$row->email])) {
-                $hashDuplicated[$row->email][] = $row->unit_name;
-            } 
+            if (!in_array($row->unit_academy, $hashDuplicated[$row->email])) {
+                $hashDuplicated[$row->email][] = $row->unit_academy;
+            }
         }
 
         foreach ($originalData as $row) {
             if (isset($hashDuplicated[$row->email])) {
                 $row->dupUnits = array_filter(
                     $hashDuplicated[$row->email],
-                    fn($value) => $value !== $row->unit_name
+                    fn($value) => $value !== $row->unit_academy
                 );
                 $row->dupUnits = implode("\n", $row->dupUnits);
             } else {
@@ -135,12 +139,12 @@ class Scholar_list extends Model
 
     }
 
-    public function getList(int $unitno) 
+    public function getList(int $unitno)
     {
         $maximumYear = date("Y") + 1;
         $minimumYear = ScholarYearResult::min("year");
         $minimumYear = $minimumYear > $maximumYear - 5 ? $minimumYear : $maximumYear - 5;
-        $list = self::where("unitno", $unitno)->orderBy('unit_name')->orderBy('SN')->get();
+        $list = self::where("unitno", $unitno)->orderBy('unit_academy')->orderBy('SN')->get();
 
         // Constructing year result dataframe
         for ($i = $maximumYear; $i >= $minimumYear; $i--) {
@@ -159,7 +163,7 @@ class Scholar_list extends Model
             }
 
         }
-        
+
         return [$list, $year_result];
     }
 
@@ -174,13 +178,13 @@ class Scholar_list extends Model
         $columns = array_merge($columns, $this->column_alias);
 
         if ($unitno == 0) {
-            $unitname = $request->input('資料提供單位');
+            $unitname = $request->input('資料提供學院');
             $unitno = Academy::where('Academy_Name', $unitname)->get(['Academy_No'])[0]['Academy_No'];
         }
 
         $row = new Scholar_list;
         DB::beginTransaction();
-        try{
+        try {
             foreach ($request->all() as $key => $value) {
                 if (array_key_exists($key, $columns)) {
                     $data_key = $columns[$key];
@@ -196,62 +200,57 @@ class Scholar_list extends Model
                 $rec->scholar_id = $row->SN;
                 $rec->year = $row->year;
                 $rec->result = true;
-                $rec->save();                
+                $rec->save();
             }
             $row->unitno = $unitno;
             $row->save();
 
             DB::commit();
-        }
-        catch (Exception $err) {
+        } catch (Exception $err) {
             DB::rollback();
             throw $err;
         }
     }
 
-    public function importData($unitno, $data, $mode)
+    public function importData($unitno, $data)
     {
         $columns = $this->getAllColumns();
-
-        if ($unitno !== 0 && $mode !== "data") {
-            throw new Exception("Invalid mode");
-        }
 
         $row_counts = count($data->Email);
         DB::beginTransaction();
         try {
-            if ($mode === "data") {
-                /** insert or update employer data */
-                $emails = $data->Email;
-                $maxsn = self::max('SN');
-                $existingEmails = self::whereIn('Email', $emails)->get(['Email'])->pluck('Email')->toArray();
+            /** insert or update employer data */
+            $emails = $data->Email;
+            $maxsn = self::withTrashed()->max('SN');
+            $existingEmails = self::whereIn('Email', $emails)->get(['Email'])->pluck('Email')->toArray();
 
-                for ($i = 0; $i < $row_counts; $i++) {
-                    $data_unitno = intval(substr($data->資料提供單位[$i], 0, 2));
-                    if ($unitno !== 0 && $data_unitno !== $unitno) {
-                        throw new Exception("Unit number does not match");
-                    }
-
-                    $row = new Scholar_list;
-
-                    if (in_array($data->Email[$i], $existingEmails)) {
-                        $row = self::where('email', $data->Email[$i])->first();
-                    }
-
-                    foreach ($data as $key => $arr) {
-                        if (array_key_exists($key, $columns)) {
-                            $new_key = $columns[$key];
-                            $row->$new_key = $arr[$i];
-                        }
-                    }
-
-                    $row->unitno = $data_unitno;
-                    $row->SN = $row->SN ? $row->SN : ++$maxsn;
-                    $row->save();
+            for ($i = 0; $i < $row_counts; $i++) {
+                $data_unitno = intval(substr($data->資料提供學院[$i], 0, 2));
+                if ($unitno !== 0 && $data_unitno !== $unitno) {
+                    throw new Exception("Cannot insert data from different unit");
                 }
-            } else if ($mode === "year result") {
-                /** insert or update scholar year result  */
-                
+
+                $row = new Scholar_list;
+
+                if (in_array($data->Email[$i], $existingEmails)) {
+                    $row = self::where('email', $data->Email[$i])->first();
+                }
+
+                foreach ($data as $key => $arr) {
+                    if (array_key_exists($key, $columns)) {
+                        $new_key = $columns[$key];
+                        $row->$new_key = $arr[$i];
+                    }
+                }
+
+                $row->unitno = $data_unitno;
+                $row->SN = $row->SN ? $row->SN : ++$maxsn;
+                $row->save();
+            }
+
+            if ($unitno === 0) {
+                /** only admin can insert or update scholar year result  */
+
                 $year_keys = array_filter(array_keys((array) $data), function ($key) {
                     return preg_match("/^20\d{2}同意參與QS$/", $key);
                 });
@@ -259,7 +258,7 @@ class Scholar_list extends Model
                 for ($i = 0; $i < $row_counts; $i++) {
                     $sn = self::where('email', $data->Email[$i])->get(['SN'])[0]['SN'];
                     if (!$sn) {
-                        throw new Exception("Email not found in database");
+                        throw new Exception("Email $data->Email[$i] not found in database");
                     }
 
                     foreach ($year_keys as $key) {
@@ -276,6 +275,13 @@ class Scholar_list extends Model
             DB::rollback();
             throw $err;
         }
+    }
+
+    public function deleteMultipleRecords($sn_list)
+    {
+        DB::beginTransaction();
+        $deleted = self::whereIn('SN', $sn_list)->delete();
+        DB::commit();
     }
 
     private function getAllColumns()

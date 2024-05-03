@@ -67,15 +67,15 @@
 
                 <div class="form-row">
                     @if ($unit !== 'Admin')
-                    <div class="form-group col-md-4">
-                        <label for="unit">資料提供單位</label>
-                        <input class="form-control" type="text" id='unit' name="資料提供單位" value="{{ $unit }}" readonly>
+                    <div class="form-group col-md-3">
+                        <label for="unit">資料提供學院</label>
+                        <input class="form-control" type="text" id='unit' name="資料提供學院" value="{{ $unit }}" readonly>
                     </div>
                     
                     @else
-                    <div class="form-group col-md-4">
-                        <label for="unit">資料提供單位 <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                        <select id="unit" class="form-control" name="資料提供單位" form="sendForm" required>
+                    <div class="form-group col-md-3">
+                        <label for="unit">資料提供學院 <i class="fa fa-asterisk" aria-hidden="true"></i></label>
+                        <select id="unit" class="form-control" name="資料提供學院" form="sendForm" required>
                             <option hidden value>請選擇單位</option>
                             @foreach ($academy_list as $ac)
                             <option value="{{ $ac }}">{{ $ac }}</option>
@@ -83,11 +83,15 @@
                         </select>
                     </div>
                     @endif
-                    <div class="form-group col-md-4">
-                        <label for="provider">資料提供者 (選填)</label>
-                        <input class="form-control" type="text" id='provider' name="資料提供者" value="{{ $unit }}">
+                    <div class="form-group col-md-3">
+                        <label for="unit_department">資料提供系所</label>
+                        <input class="form-control" type="text" id='unit_department' name="資料提供系所">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
+                        <label for="provider">資料提供者 (選填)</label>
+                        <input class="form-control" type="text" id='provider' name="資料提供者">
+                    </div>
+                    <div class="form-group col-md-3">
                         <label for="unitEmail">資料提供者Email (選填)</label>
                         <input class="form-control" type="text" id='unitEmail' name="資料提供者Email" value="{{ $unitemail }}">
                     </div>
