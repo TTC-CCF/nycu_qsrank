@@ -69,13 +69,13 @@
                     @if ($unit !== 'Admin')
                     <div class="form-group col-md-4">
                         <label for="unit">資料提供單位</label>
-                        <input class="form-control" type="text" id='unit' name="unit_name" value="{{ $unit }}" readonly>
+                        <input class="form-control" type="text" id='unit' name="資料提供單位" value="{{ $unit }}" readonly>
                     </div>
                     
                     @else
                     <div class="form-group col-md-4">
                         <label for="unit">資料提供單位 <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                        <select id="unit" class="form-control" name="unit_name" form="sendForm" required>
+                        <select id="unit" class="form-control" name="資料提供單位" form="sendForm" required>
                             <option hidden value>請選擇單位</option>
                             @foreach ($academy_list as $ac)
                             <option value="{{ $ac }}">{{ $ac }}</option>
@@ -85,11 +85,11 @@
                     @endif
                     <div class="form-group col-md-4">
                         <label for="provider">資料提供者 (選填)</label>
-                        <input class="form-control" type="text" id='provider' name="provider" value="{{ $unit }}">
+                        <input class="form-control" type="text" id='provider' name="資料提供者" value="{{ $unit }}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="unitEmail">資料提供者Email (選填)</label>
-                        <input class="form-control" type="text" id='unitEmail' name="unit_email" value="{{ $unitemail }}">
+                        <input class="form-control" type="text" id='unitEmail' name="資料提供者Email" value="{{ $unitemail }}">
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="OtherTitle" name="other_title" placeholder="Other Title" hidden>
+                    <input type="text" class="form-control" id="OtherTitle" name="OtherTitle" placeholder="Other Title" hidden>
                 </div>
                 
                 <div class="form-row">
@@ -127,7 +127,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                     <label for="JobTitle">Job Title <i class="fa fa-asterisk" aria-hidden="true"></i></label>
-                    <input type="text" class="form-control" id="Job Title" name="JobTitle" required>
+                    <input type="text" class="form-control" id="Job Title" name="Job Title" required>
                     </div>
                     <div class="form-group col-md-4">
                     <label for="Department">Department <i class="fa fa-asterisk" aria-hidden="true"></i></label>

@@ -481,7 +481,7 @@ function editing_bsa_ms(element, sn){
     var parent_element = element.parentNode;
     var bsa_element;
     var ms_element;
-    if (parent_element.getAttribute('row') === "BroadSubjectArea"){
+    if (parent_element.getAttribute('row') === "Broad Subject Area"){
         bsa_element = parent_element;
         ms_element = parent_element.nextElementSibling;
     }

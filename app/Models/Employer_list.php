@@ -97,7 +97,8 @@ class Employer_list extends Model
     {
         DB::beginTransaction();
         try {
-            self::where('SN', $sn)->update([$key => $new_data]);
+            $data_key = $this->column_alias[$key];
+            self::where('SN', $sn)->update([$data_key => $new_data]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -107,24 +108,24 @@ class Employer_list extends Model
 
     public function getDuplicatePerson(&$originalData)
     {
-        $duplicated = self::select("SN", "Email", "unit_name")
-            ->whereRaw('Email IN (SELECT Email FROM Employer_list GROUP BY Email HAVING COUNT(Email) > 1)')
+        $duplicated = self::select("SN", "email", "unit_name")
+            ->whereRaw('email IN (SELECT email FROM Employer_list GROUP BY email HAVING COUNT(email) > 1)')
             ->get();
 
         $hashDuplicated = [];
         foreach ($duplicated as $row) {
-            if (!isset($hashDuplicated[$row->Email]))
-                $hashDuplicated[$row->Email] = [];
+            if (!isset($hashDuplicated[$row->email]))
+                $hashDuplicated[$row->email] = [];
 
-            if (!in_array($row->unit_name, $hashDuplicated[$row->Email])) {
-                $hashDuplicated[$row->Email][] = $row->unit_name;
+            if (!in_array($row->unit_name, $hashDuplicated[$row->email])) {
+                $hashDuplicated[$row->email][] = $row->unit_name;
             }
         }
 
         foreach ($originalData as $row) {
-            if (isset($hashDuplicated[$row->Email])) {
+            if (isset($hashDuplicated[$row->email])) {
                 $row->dupUnits = array_filter(
-                    $hashDuplicated[$row->Email],
+                    $hashDuplicated[$row->email],
                     fn($value) => $value !== $row->unit_name
                 );
                 $row->dupUnits = implode("\n", $row->dupUnits);
@@ -174,7 +175,7 @@ class Employer_list extends Model
         $columns = array_merge($columns, $this->column_alias);
 
         if ($unitno == 0) {
-            $unitname = $request->input('UnitName');
+            $unitname = $request->input('資料提供單位');
             $unitno = Academy::where('Academy_Name', $unitname)->get(['Academy_No'])[0]['Academy_No'];
         }
 
@@ -183,7 +184,8 @@ class Employer_list extends Model
         try {
             foreach ($request->all() as $key => $value) {
                 if (array_key_exists($key, $columns)) {
-                    $row->{$this->column_alias[$key]} = $value;
+                    $data_key = $columns[$key];
+                    $row->$data_key = $value;
                 }
             }
 
@@ -194,6 +196,7 @@ class Employer_list extends Model
                 $rec->result = true;
                 $rec->save();
             }
+            $row->unitno = $unitno;
             $row->save();
 
             DB::commit();
@@ -218,7 +221,7 @@ class Employer_list extends Model
                 /** insert or update employer data */
                 $emails = $data->Email;
                 $maxsn = self::max('SN');
-                $existingEmails = self::whereIn('Email', $emails)->get(['Email'])->pluck('Email')->toArray();
+                $existingEmails = self::whereIn('email', $emails)->get(['email'])->pluck('email')->toArray();
 
                 for ($i = 0; $i < $row_counts; $i++) {
                     $data_unitno = intval(substr($data->資料提供單位[$i], 0, 2));
@@ -229,7 +232,7 @@ class Employer_list extends Model
                     $row = new Employer_list;
 
                     if (in_array($data->Email[$i], $existingEmails)) {
-                        $row = self::where('Email', $data->Email[$i])->first();
+                        $row = self::where('email', $data->Email[$i])->first();
                     }
 
                     foreach ($data as $key => $arr) {
@@ -251,7 +254,7 @@ class Employer_list extends Model
                 });
 
                 for ($i = 0; $i < $row_counts; $i++) {
-                    $sn = self::where('Email', $data->Email[$i])->get(['SN'])[0]['SN'];
+                    $sn = self::where('email', $data->Email[$i])->get(['SN'])[0]['SN'];
                     if (!$sn) {
                         throw new Exception("Email not found in database");
                     }

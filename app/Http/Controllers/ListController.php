@@ -82,7 +82,8 @@ class ListController extends Controller
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
         $view_name = ($mode == 'scholar') ? 'scholarList' : 'employerList';
 
-        $unit = $request->query("unit") ?? ($id === 0 ? 1 : $id);
+        $unit = intval($request->query("unit"));
+        $unit = $unit === 0 ? 1 : $unit;
 
         $static_data = $this->getStaticData($mode);
         

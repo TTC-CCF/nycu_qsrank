@@ -48,9 +48,10 @@ class DataController extends Controller
         $new_ms = $request->input('new_ms');
         $sn = $request->input('SN');
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-        $this->output->writeln($request);
+
         try {
-            $table::where('SN', $sn)->update(['BroadSubjectArea' => $new_bsa, 'MainSubject' => $new_ms]);
+            $table->updateTextData($sn, 'Broad Subject Area', $new_bsa);
+            $table->updateTextData($sn, 'Main Subject', $new_ms);
         } catch (Exception $err) {
             $this->output->writeln($err);
         }
@@ -68,6 +69,7 @@ class DataController extends Controller
             return redirect()->route('list')->with('status', 'Successfully add ' . $mode . ' data');
 
         } catch (Exception $err) {
+            $this->output->writeln($err);
             return redirect()->route('list')->with('status', 'Failed to add ' . $mode . ' data');
         }
     }

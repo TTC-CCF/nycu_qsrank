@@ -141,7 +141,7 @@
                         @endif
 
                         <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="資料提供者">
-                            {{ $row['provider'] }}
+                            {{ $row['provider_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
@@ -154,19 +154,19 @@
                             {{ $row['title'] }}
                             <button class="edit_button" onclick='editing(this, "{{ $row["SN"] }}", @json($titles))'><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="First_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="First Name">
                             {{ $row['first_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Last_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Last Name">
                             {{ $row['last_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Chinese_name">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Chinese Name">
                             {{ $row['chinese_name'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Job_title">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Job Title">
                             {{ $row['job_title'] }}
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
@@ -179,11 +179,11 @@
                             <button class="edit_button" onclick="editing(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
 
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="BroadSubjectArea">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Broad Subject Area">
                             {{ $row['broad_subject_area'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
-                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="MainSubject">
+                        <td @if((session('id') === $unit && $permit === "write") || $admin) class="editable" @endif row="Main Subject">
                             {{ $row['main_subject'] }}
                             <button class="edit_button" onclick="editing_bsa_ms(this, '{{ $row['SN'] }}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         </td>
@@ -216,7 +216,7 @@
                         @else
                         
                             @foreach($year_results as $year => $result) 
-                                <td row="{{$year}}同意參與QS" type="checkbox">
+                                <td row="{{$year}}同意參與QS" type="checkbox" isCheck={{ $result[$row["SN"]] }}>
                                     @if ($result[$row["SN"]] === 1)
                                     <i class="fa-solid fa-check"></i>
                                     @elseif ($result[$row["SN"]] === 0)
@@ -329,9 +329,8 @@
     <button id="addModal-Failed-btn" data-toggle="modal" data-target="#addModalFailed" hidden></button>
     <input id="addStatus" value="{{ $add_status }}" hidden>
 
-    {{-- <input id="academy_list" value='@json($academy_list)' hidden>
     <input id="bsa_list" value='@json($bsa_list)' hidden>
-    <input id="ms_dict" value='@json($ms_dict)' hidden> --}}
+    <input id="ms_dict" value='@json($ms_dict)' hidden>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
