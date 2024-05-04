@@ -12,51 +12,45 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public $output;
-    function __construct() {
+    function __construct()
+    {
         $this->output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-      }
-    public function showUnits() {
+    }
+    public function showUnits()
+    {
         $units = User::all();
         $academy = Academy::all();
         $permit_each_unit = Permission::getAllPermissions();
 
-        foreach($academy as $row){
+        foreach ($academy as $row) {
             $academy_list[$row->Academy_No] = $row->Academy_Name;
         }
-        return view('unitsManager', ['academy_list' => $academy_list, 'units' => $units, 'admin' => true, 'add_status' => '', 'permit_each_unit' => $permit_each_unit]);
+        return view(
+            'unitsManager',
+            [
+                'academy_list' => $academy_list,
+                'units' => $units,
+                'admin' => true,
+                'add_status' => '',
+                'permit_each_unit' => $permit_each_unit
+            ]
+        );
     }
-    public function addAccount(Request $request) {
+    public function addAccount(Request $request)
+    {
         $body = $request->getContent();
         $body = json_decode($body);
         $unit = $body->unit;
         $account = $body->account;
 
-        DB::beginTransaction();
-        try{
-            $pwd = User::where('unit', $unit)->first();
-            $max_sn = User::query()->max('SN') + 1;
-            $isNewPwd = false;
-            if ($pwd){
-                $pwd = $pwd->password;
-            } else {
-                $pwd = $this->randomPassword();
-                $isNewPwd = true;
-            }
-            $user = new User;
-            $user->SN = $max_sn;
-            $user->account = $account;
-            $user->password = $pwd;
-            $user->email = $account;
-            $user->unit = $unit;
-            $user->unitno = substr($unit, 0, 2);
-            $user->save();
+        try {
+            list($isNewPwd, $pwd, $max_sn) = User::addAccount($unit, $account);
 
-            DB::commit();
             if ($isNewPwd) {
                 return response()->json([
                     'status' => 'success',
-                    'msg' => '新增成功, 密碼為：'.$pwd,
+                    'msg' => '新增成功, 密碼為：' . $pwd,
                     'newAccount' => $account,
                     'SN' => $max_sn,
                 ]);
@@ -68,77 +62,74 @@ class UserController extends Controller
                     'SN' => $max_sn,
                 ]);
             }
-            
+
         } catch (\Exception $e) {
-            DB::rollBack();
             $this->output->writeln($e->getMessage());
-            return response()->json(['status' => 'failed', 'msg' => '新增失敗']);
+            return response()->json(['status' => 'failed', 'msg' => "新增失敗 {$e->getMessage()}"]);
         }
 
-        
+
     }
-    public function deleteAccount(Request $request) {
+    public function deleteAccount(Request $request)
+    {
         $body = $request->getContent();
         $body = json_decode($body);
 
-        $SN = $body->SN;
+        $sn = $body->SN;
 
-        DB::beginTransaction();
         try {
-            User::where('SN', $SN)->delete();
-            DB::commit();
+            User::deleteAccount($sn);
             return response()->json(['status' => 'success', 'msg' => '刪除成功']);
         } catch (\Exception $e) {
-            DB::rollBack();
             $this->output->writeln($e->getMessage());
-            return response()->json(['status' => 'failed', 'msg' => '刪除失敗']);
+            return response()->json(['status' => 'failed', 'msg' => "刪除失敗 {$e->getMessage()}"]);
         }
-        
+
 
     }
-    public function editAccount(Request $request) {
+    public function editAccount(Request $request)
+    {
         $body = $request->getContent();
         $body = json_decode($body);
         $account = $body->account;
         $sn = $body->SN;
 
-        DB::beginTransaction();
-        try{
-            User::where('SN', $sn)->update(['account' => $account, 'email' => $account]);
-            DB::commit();
-            
+        try {
+            User::editAccount($sn, $account);
+
             return response()->json([
                 'status' => 'success',
                 'msg' => '修改成功',
                 'newAccount' => $account,
                 'SN' => $sn,
             ]);
-            
+
         } catch (\Exception $e) {
-            DB::rollBack();
             $this->output->writeln($e->getMessage());
-            return response()->json(['status' => 'failed', 'msg' => '新增失敗']);
+            return response()->json(['status' => 'failed', 'msg' => "新增失敗 {$e->getMessage()}"]);
         }
     }
-    public function changeAccountPassword(Request $request) {
+    public function changeAccountPassword(Request $request)
+    {
         try {
             $pwd = $request->input('password');
             $unit = $request->input('unit');
 
-            User::where('unit', $unit)->update(['password' => Hash::make($pwd)]);
+            User::changeAccountPassword($unit, Hash::make($pwd));
             return response()->json(['status' => 'success', 'msg' => '更改成功', 'password' => $pwd]);
 
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
-            return response()->json(['status' => 'failed', 'msg' => '發生錯誤']);
+            return response()->json(['status' => 'failed', 'msg' => "發生錯誤 {$e->getMessage()}"]);
         }
 
     }
 
-    public function changePermission(Request $request) {
+    public function changePermission(Request $request)
+    {
         try {
             $formData = $request->all();
-            foreach($formData as $key => $data) {
+            foreach ($formData as $key => $data) {
                 if ($data === "write" || $data === "readonly") {
                     $unitnos[] = $key;
                     $permits[] = $data;
@@ -147,48 +138,13 @@ class UserController extends Controller
             $unitnos = array_map(function ($key) {
                 return explode('-', $key)[0];
             }, $unitnos);
-            
+
             Permission::updatePermissions($unitnos, $permits);
-    
+
             return response()->json(['status' => 'success', 'msg' => '更改成功']);
         } catch (\Exception $e) {
             $this->output->writeln($e->getMessage());
-            return response()->json(['status' => 'failed', 'msg' => '發生錯誤']);            
+            return response()->json(['status' => 'failed', 'msg' => "發生錯誤 {$e->getMessage()}"]);
         }
     }
-
-    private function randomPassword($len = 8) {
-
-        //enforce min length 8
-        if($len < 8)
-            $len = 8;
-    
-        //define character libraries - remove ambiguous characters like iIl|1 0oO
-        $sets = array();
-        $sets[] = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-        $sets[] = 'abcdefghjkmnpqrstuvwxyz';
-        $sets[] = '23456789';
-        $sets[]  = '~!@#$%^&*(){}[],./?';
-    
-        $password = '';
-        
-        //append a character from each set - gets first 4 characters
-        foreach ($sets as $set) {
-            $password .= $set[array_rand(str_split($set))];
-        }
-    
-        //use all characters to fill up to $len
-        while(strlen($password) < $len) {
-            //get a random set
-            $randomSet = $sets[array_rand($sets)];
-            
-            //add a random char from the random set
-            $password .= $randomSet[array_rand(str_split($randomSet))]; 
-        }
-        
-        //shuffle the password string before returning!
-        return str_shuffle($password);
-    }
-
-    
 }

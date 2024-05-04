@@ -16,4 +16,12 @@ class Academy extends Model
     protected $primaryKey = 'SN';
     protected $fillable = array('*');
     public $timestamps = false;
+
+    public static function getUnitNameByUnitNo($unit_no)
+    {
+        if ($unit_no === 0) return 'Admin';
+
+        $academy = self::where('Academy_No', $unit_no)->first();
+        return $academy->Academy_Name;
+    }
 }

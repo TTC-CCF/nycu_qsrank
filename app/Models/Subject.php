@@ -16,4 +16,22 @@ class Subject extends Model
     protected $primaryKey = 'SN';
     protected $fillable = array('*');
     public $timestamps = false;
+
+    public static function getSubjectList()
+    {
+        $subjects = self::all();
+        $ms_dict = [];
+
+        foreach ($subjects as $subject) {
+            $broadSubjectArea = $subject->BroadSubjectArea;
+            $mainSubject = $subject->MainSubject;
+
+            if (!isset($ms_dict[$broadSubjectArea])) {
+                $ms_dict[$broadSubjectArea] = [];
+            }
+            $ms_dict[$broadSubjectArea][] = $mainSubject;
+        }
+
+        return $ms_dict;
+    }
 }

@@ -30,7 +30,7 @@ class DataController extends Controller
         $isCheckbox = $request->input('isCheckbox');
 
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-        $this->output->writeln($request);
+
         if ($isCheckbox) {
             $year = substr($key, 0, 4);
             $table->updateYearResult($sn, $year, $new_data);
@@ -107,38 +107,21 @@ class DataController extends Controller
             return response()->json(['status' => 'fail', 'message' => 'Failed to delete, please try again'], 200);
         }
     }
-    public function showAdd($mode)
+    public function showAdd(Request $request, $mode)
     {
         Session::put('list_mode', $mode);
         $unitno = Session::get('id');
         $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
         $view_name = ($mode == 'scholar') ? 'addScholarData' : 'addEmployerData';
-        $new_sn = $table->query()->max('SN');
-        $academy_list = null;
+        $new_sn = $table->withTrashed()->max('SN');
+        $academy_list = Academy::pluck('Academy_Name');;
         $bsa_list = Subject::pluck('BroadSubjectArea')->unique();
 
-        if ($unitno == 0) {
-            $unit_name = 'Admin';
-            $unit_email = 'Admin';
-            $academy_list = Academy::pluck('Academy_Name');
-        } else {
-            $unit_name = Academy::where('Academy_No', $unitno)->get(['Academy_Name'])[0]['Academy_Name'];
-            $unit_email = User::where('unitno', $unitno)->get(['email'])[0]['email'];
-        }
+        $unit_name = Academy::getUnitNameByUnitNo($unitno);
+        $unit_email = $request->user()->email;
 
         // retrieve subject data
-        $subjects = Subject::all();
-        $ms_dict = [];
-
-        foreach ($subjects as $subject) {
-            $broadSubjectArea = $subject->BroadSubjectArea;
-            $mainSubject = $subject->MainSubject;
-
-            if (!isset($ms_dict[$broadSubjectArea])) {
-                $ms_dict[$broadSubjectArea] = [];
-            }
-            $ms_dict[$broadSubjectArea][] = $mainSubject;
-        }
+        $ms_dict = Subject::getSubjectList();
 
         // retrieve title data
         $titles = DB::table('Title')->where('belongs_to', $mode)->get(['name'])->toArray();
@@ -178,42 +161,20 @@ class DataController extends Controller
     {
         Session::put('list_mode', $mode);
         $unitno = Session::get('id');
-        $table = ($mode == 'scholar') ? new Scholar_list : new Employer_list;
-        $view_name = ($mode == 'scholar') ? 'importScholarData' : 'importEmployerData';
-        $academy_list = null;
-        $bsa_list = Subject::pluck('BroadSubjectArea')->unique();
 
-        if ($unitno == 0) {
-            $unit_name = 'Admin';
-            $unit_email = 'Admin';
-            $academy_list = Academy::pluck('Academy_Name');
-        } else {
-            $unit_name = Academy::where('Academy_No', $unitno)->get(['Academy_Name'])[0]['Academy_Name'];
-            $unit_email = User::where('unitno', $unitno)->get(['email'])[0]['email'];
-        }
+        if ($mode === 'scholar')
+            $view_name = 'importScholarData';
+        else if ($mode === 'employer')
+            $view_name = 'importEmployerData';
+        else
+            return redirect()->route('list');
 
-        $subjects = Subject::all();
-        $ms_dict = [];
-
-        foreach ($subjects as $subject) {
-            $broadSubjectArea = $subject->BroadSubjectArea;
-            $mainSubject = $subject->MainSubject;
-
-            if (!isset($ms_dict[$broadSubjectArea])) {
-                $ms_dict[$broadSubjectArea] = [];
-            }
-            $ms_dict[$broadSubjectArea][] = $mainSubject;
-        }
+        $unit_name = Academy::getUnitNameByUnitNo($unitno);
 
         return view(
             $view_name,
             [
-                'unitno' => $unitno,
                 'unit_name' => $unit_name,
-                'unitemail' => $unit_email,
-                'academy_list' => $academy_list,
-                'bsa_list' => $bsa_list,
-                'ms_dict' => $ms_dict
             ]
         );
     }

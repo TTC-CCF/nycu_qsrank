@@ -25,25 +25,17 @@ class ListController extends Controller
 
     private function getStaticData($mode)
     {
+        // retrieve broad subject area data
         $bsa_list = Subject::pluck('BroadSubjectArea')->unique();
         
-        $subjects = Subject::all();
-        $ms_dict = [];
-
-        foreach ($subjects as $subject) {
-            $broadSubjectArea = $subject->BroadSubjectArea;
-            $mainSubject = $subject->MainSubject;
-
-            if (!isset($ms_dict[$broadSubjectArea])) {
-                $ms_dict[$broadSubjectArea] = [];
-            }
-            $ms_dict[$broadSubjectArea][] = $mainSubject;
-        }
-
+        // retrieve academy data
         $academy = Academy::all();
         foreach($academy as $row){
             $academy_list[$row->Academy_No] = $row->Academy_Name;
         }
+
+        // retrieve main subject data
+        $ms_dict = Subject::getSubjectList();
 
         // retrieve title data
         $titles = DB::table('Title')->where('belongs_to', $mode)->get(['name'])->toArray();
@@ -65,6 +57,7 @@ class ListController extends Controller
         $countries = array_map(function ($country) {
             return $country->name;
         }, $countries);
+        
         return [
             'bsa_list' => $bsa_list,
             'ms_dict' => $ms_dict,
